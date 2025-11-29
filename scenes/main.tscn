@@ -1,0 +1,77 @@
+[gd_scene load_steps=3 format=3 uid="uid://041pr00jvjc"]
+[ext_resource type="Script" uid="uid://dnlbox04sq5gv" path="res://scenes/main.gd" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://bm3t4ppebfvfl" path="res://scenes/battery.tscn" id="2_0xm2m"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_0xm2m")
+
+[node name="Battery1" parent="." instance=ExtResource("2_0xm2m")]
+position = Vector2(231, 124)
+
+[node name="Battery2" parent="." instance=ExtResource("2_0xm2m")]
+position = Vector2(291, 124)
+
+[node name="Battery3" parent="." instance=ExtResource("2_0xm2m")]
+position = Vector2(351, 124)
+
+[node name="Battery4" parent="." instance=ExtResource("2_0xm2m")]
+position = Vector2(411, 124)
+
+[node name="Battery5" parent="." instance=ExtResource("2_0xm2m")]
+position = Vector2(231, 222)
+
+[node name="Battery6" parent="." instance=ExtResource("2_0xm2m")]
+position = Vector2(291, 222)
+
+[node name="Battery7" parent="." instance=ExtResource("2_0xm2m")]
+position = Vector2(351, 222)
+
+[node name="Battery8" parent="." instance=ExtResource("2_0xm2m")]
+position = Vector2(411, 222)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="LayoutControl" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ResetButton" type="Button" parent="UI/LayoutControl"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -15.0
+offset_top = -60.0
+offset_right = 15.0
+offset_bottom = -29.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+focus_mode = 0
+text = "Reset!"
+
+[node name="MessageLabel" type="Label" parent="UI/LayoutControl"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -42.5
+offset_top = -110.0
+offset_right = 42.5
+offset_bottom = -82.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+
+[connection signal="button_up" from="UI/LayoutControl/ResetButton" to="." method="reset"]

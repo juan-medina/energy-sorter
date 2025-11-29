@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://bm3t4ppebfvfl"]
+
+[ext_resource type="Texture2D" uid="uid://6y3ole1nli7" path="res://resources/Sprite-0001.png" id="1_8fmpm"]
+[ext_resource type="Script" uid="uid://duymfur56klj7" path="res://scenes/battery.gd" id="1_qise7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0xm2m"]
+atlas = ExtResource("1_8fmpm")
+region = Rect2(14, 3, 36, 59)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h2yge"]
+atlas = ExtResource("1_8fmpm")
+region = Rect2(68, 10, 24, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1bvp3"]
+size = Vector2(36, 58)
+
+[node name="Battery" type="Area2D"]
+script = ExtResource("1_qise7")
+
+[node name="Body" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_0xm2m")
+
+[node name="Energy1" type="Sprite2D" parent="Body"]
+position = Vector2(0, 8)
+texture = SubResource("AtlasTexture_h2yge")
+offset = Vector2(0, 9)
+
+[node name="Energy2" type="Sprite2D" parent="Body"]
+position = Vector2(0, 3)
+texture = SubResource("AtlasTexture_h2yge")
+offset = Vector2(0, 4)
+
+[node name="Energy3" type="Sprite2D" parent="Body"]
+position = Vector2(0, -2)
+texture = SubResource("AtlasTexture_h2yge")
+offset = Vector2(0, -1)
+
+[node name="Energy4" type="Sprite2D" parent="Body"]
+position = Vector2(0, -11)
+texture = SubResource("AtlasTexture_h2yge")
+offset = Vector2(0, -1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1bvp3")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
