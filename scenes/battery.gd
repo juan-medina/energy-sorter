@@ -13,6 +13,7 @@ var _energies: Array[Color] = []
 var _energy_sprites: Array[Sprite2D] = []
 var _current_energy: int = 0
 var _body: Sprite2D
+var _hover_enabled: bool = true
 
 enum State {NORMAL, HOVER, SELECTED}
 
@@ -129,14 +130,27 @@ func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) ->
 			click.emit()
 
 func _on_mouse_entered() -> void:
+	if not _hover_enabled:
+		return
+
 	if state != State.SELECTED:
 		state = State.HOVER
 		_update_scale()
 
 func _on_mouse_exited() -> void:
+	if not _hover_enabled:
+		return
+
 	if state != State.SELECTED:
 		state = State.NORMAL
 		_update_scale()
+
+func hover_enabled(enabled: bool) -> void:
+	_hover_enabled = enabled
+	if not enabled:
+		if state == State.HOVER:
+			state = State.NORMAL
+			_update_scale()
 
 func _update_scale() -> void:
 	if state == State.SELECTED:

@@ -19,6 +19,7 @@ var _message_label: Label
 
 var _origin_battery: int = -1
 var _selected_energy: Array[Color] = []
+var game_over: bool = false
 
 func _ready() -> void:
 	_message_label = get_node("UI/LayoutControl/MessageLabel")
@@ -36,6 +37,11 @@ func reset() -> void:
 	_message_label.text = ""
 	for i: int in range(MAX_BATTERIES):
 		_batteries[i].reset()
+
+	# Game is active again; re-enable hover on all batteries
+	game_over = false
+	for b: Battery in _batteries:
+		b.hover_enabled(true)
 
 	var empty_index: int = randi() % MAX_BATTERIES
 
@@ -88,6 +94,9 @@ func check_end_condition() -> void:
 
 	if all_sorted:
 		_message_label.text = "All Energy Sorted : You win!"
+		game_over = true
+		for b: Battery in _batteries:
+			b.hover_enabled(false)
 	else:
 		var has_possible_move: bool = false
 		for i: int in range(MAX_BATTERIES):
@@ -110,3 +119,6 @@ func check_end_condition() -> void:
 
 		if not has_possible_move:
 			_message_label.text = "No more moves : Game Over"
+			game_over = true
+			for b: Battery in _batteries:
+				b.hover_enabled(false)
