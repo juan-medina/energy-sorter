@@ -29,19 +29,15 @@ func _ready() -> void:
 		var battery_node: Battery = get_node("Battery%d" % (i + 1)) as Battery
 		_batteries[i] = battery_node
 
-		battery_node.click.connect(_on_battery_click.bind(i))
+		battery_node.clicked.connect(_on_battery_clicked.bind(i))
 
 	reset()
 
 func reset() -> void:
 	_message_label.text = ""
+	game_over = false
 	for i: int in range(MAX_BATTERIES):
 		_batteries[i].reset()
-
-	# Game is active again; re-enable hover on all batteries
-	game_over = false
-	for b: Battery in _batteries:
-		b.hover_enabled(true)
 
 	var empty_index: int = randi() % MAX_BATTERIES
 
@@ -65,14 +61,14 @@ func distribute_color(color: Color, units: int, empty_index: int) -> void:
 		target.add_energy(color)
 		distributed += 1
 
-func _on_battery_click(index: int) -> void:
+func _on_battery_clicked(index: int) -> void:
 	if _origin_battery == -1:
 		if _batteries[index].is_empty:
 			return
 
 		_origin_battery = index
 		_batteries[index].is_selected = true
-		_selected_energy = _batteries[index].get_top_energy()
+		_selected_energy = _batteries[index].get_top_energies()
 	else:
 		if _batteries[index].can_get_energy(_selected_energy):
 			_batteries[_origin_battery].remove_energy(_selected_energy.size())
@@ -96,14 +92,14 @@ func check_end_condition() -> void:
 		_message_label.text = "All Energy Sorted : You win!"
 		game_over = true
 		for b: Battery in _batteries:
-			b.hover_enabled(false)
+			b.hover_enabled = false
 	else:
 		var has_possible_move: bool = false
 		for i: int in range(MAX_BATTERIES):
 			if _batteries[i].is_empty or _batteries[i].is_closed:
 				continue
 
-			var top_energy: Array[Color] = _batteries[i].get_top_energy()
+			var top_energy: Array[Color] = _batteries[i].get_top_energies()
 			for j: int in range(MAX_BATTERIES):
 				if i == j:
 					continue
@@ -121,4 +117,4 @@ func check_end_condition() -> void:
 			_message_label.text = "No more moves : Game Over"
 			game_over = true
 			for b: Battery in _batteries:
-				b.hover_enabled(false)
+				b.hover_enabled = false

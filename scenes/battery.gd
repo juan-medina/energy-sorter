@@ -5,7 +5,7 @@
 extends Area2D
 class_name Battery
 
-signal click
+signal clicked
 
 const MAX_ENERGY: int = 4
 
@@ -17,7 +17,7 @@ var _hover_enabled: bool = true
 
 enum State {NORMAL, HOVER, SELECTED}
 
-var state: int = State.NORMAL
+var _state: int = State.NORMAL
 
 var is_full: bool:
 	get: return _current_energy == MAX_ENERGY
@@ -35,9 +35,9 @@ var is_closed: bool:
 		return true
 
 var is_selected: bool:
-	get: return state == State.SELECTED
+	get: return _state == State.SELECTED
 	set(value):
-		state = State.SELECTED if value else State.NORMAL
+		_state = State.SELECTED if value else State.NORMAL
 		_update_scale()
 
 func _ready() -> void:
@@ -52,7 +52,6 @@ func _ready() -> void:
 	if not input_event.is_connected(_on_input_event):
 		input_event.connect(_on_input_event)
 
-	# Ensure scale matches initial state
 	_update_scale()
 
 func add_energy(color: Color) -> void:
@@ -77,7 +76,7 @@ func remove_energy(amount: int) -> void:
 
 	_current_energy -= amount
 
-func get_top_energy() -> Array[Color]:
+func get_top_energies() -> Array[Color]:
 	var list: Array[Color] = []
 	if _current_energy == 0:
 		return list
@@ -119,7 +118,8 @@ func reset() -> void:
 		sprite.modulate = Color.WHITE
 		sprite.visible = false
 	_body.modulate = Color.WHITE
-	state = State.NORMAL
+	_state = State.NORMAL
+	_hover_enabled = true
 	_update_scale()
 
 func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) -> void:
@@ -127,35 +127,37 @@ func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) ->
 		if (event as InputEventMouseButton).pressed == true:
 			if is_closed:
 				return
-			click.emit()
+			emit_signal("clicked")
 
 func _on_mouse_entered() -> void:
 	if not _hover_enabled:
 		return
 
-	if state != State.SELECTED:
-		state = State.HOVER
+	if _state != State.SELECTED:
+		_state = State.HOVER
 		_update_scale()
 
 func _on_mouse_exited() -> void:
 	if not _hover_enabled:
 		return
 
-	if state != State.SELECTED:
-		state = State.NORMAL
+	if _state != State.SELECTED:
+		_state = State.NORMAL
 		_update_scale()
 
-func hover_enabled(enabled: bool) -> void:
-	_hover_enabled = enabled
-	if not enabled:
-		if state == State.HOVER:
-			state = State.NORMAL
-			_update_scale()
+var hover_enabled: bool:
+	get: return _hover_enabled
+	set(value):
+		_hover_enabled = value
+		if not value:
+			if _state == State.HOVER:
+				_state = State.NORMAL
+				_update_scale()
 
 func _update_scale() -> void:
-	if state == State.SELECTED:
+	if _state == State.SELECTED:
 		scale = Vector2.ONE * 1.5
-	elif state == State.HOVER:
+	elif _state == State.HOVER:
 		scale = Vector2.ONE * 1.2
 	else:
 		scale = Vector2.ONE
