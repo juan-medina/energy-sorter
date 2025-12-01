@@ -15,22 +15,24 @@ const ENERGY_COLORS: Array[Color] = [
 const MAX_BATTERIES: int = 8
 
 var _batteries: Array[Battery] = []
-var _message_label: Label
+@onready var _message_label: Label = $UI/LayoutControl/MessageLabel
+@onready var _battery_nodes: Array[Battery] = [
+    $Battery1, $Battery2, $Battery3, $Battery4, $Battery5, $Battery6, $Battery7, $Battery8
+]
 
 var _origin_battery: int = -1
 var _selected_energy: Array[Color] = []
 var game_over: bool = false
+var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 func _ready() -> void:
-	_message_label = get_node("UI/LayoutControl/MessageLabel")
-
 	_batteries.resize(MAX_BATTERIES)
 	for i: int in range(MAX_BATTERIES):
-		var battery_node: Battery = get_node("Battery%d" % (i + 1)) as Battery
+		var battery_node: Battery = _battery_nodes[i]
 		_batteries[i] = battery_node
-
 		battery_node.clicked.connect(_on_battery_clicked.bind(i))
 
+	_rng.randomize()
 	reset()
 
 func reset() -> void:
@@ -39,7 +41,7 @@ func reset() -> void:
 	for i: int in range(MAX_BATTERIES):
 		_batteries[i].reset()
 
-	var empty_index: int = randi() % MAX_BATTERIES
+	var empty_index: int = _rng.randi_range(0, MAX_BATTERIES - 1)
 
 	for color: Color in ENERGY_COLORS:
 		distribute_color(color, 4, empty_index)
@@ -48,7 +50,7 @@ func distribute_color(color: Color, units: int, empty_index: int) -> void:
 	var distributed: int = 0
 
 	while distributed < units:
-		var target_index: int = randi() % MAX_BATTERIES
+		var target_index: int = _rng.randi_range(0, MAX_BATTERIES - 1)
 
 		if target_index == empty_index:
 			continue
@@ -89,7 +91,7 @@ func check_end_condition() -> void:
 			break
 
 	if all_sorted:
-		_message_label.text = "All Energy Sorted : You win!"
+		_message_label.text = &"All Energy Sorted : You win!"
 		game_over = true
 		for b: Battery in _batteries:
 			b.accepts_input = false
@@ -114,7 +116,7 @@ func check_end_condition() -> void:
 				break
 
 		if not has_possible_move:
-			_message_label.text = "No more moves : Game Over"
+			_message_label.text = &"No more moves : Game Over"
 			game_over = true
 			for b: Battery in _batteries:
 				b.accepts_input = false
