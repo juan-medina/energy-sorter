@@ -13,7 +13,7 @@ var _energies: Array[Color] = []
 var _energy_sprites: Array[Sprite2D] = []
 var _current_energy: int = 0
 var _body: Sprite2D
-var _hover_enabled: bool = true
+var _accepts_input: bool = true
 
 enum State {NORMAL, HOVER, SELECTED}
 
@@ -119,18 +119,21 @@ func reset() -> void:
 		sprite.visible = false
 	_body.modulate = Color.WHITE
 	_state = State.NORMAL
-	_hover_enabled = true
+	_accepts_input = true
 	_update_scale()
 
 func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton:
-		if (event as InputEventMouseButton).pressed == true:
+		var mb: InputEventMouseButton = event as InputEventMouseButton
+		if mb.pressed == true:
+			if not _accepts_input:
+				return
 			if is_closed:
 				return
 			emit_signal("clicked")
 
 func _on_mouse_entered() -> void:
-	if not _hover_enabled:
+	if not _accepts_input:
 		return
 
 	if _state != State.SELECTED:
@@ -138,17 +141,17 @@ func _on_mouse_entered() -> void:
 		_update_scale()
 
 func _on_mouse_exited() -> void:
-	if not _hover_enabled:
+	if not _accepts_input:
 		return
 
 	if _state != State.SELECTED:
 		_state = State.NORMAL
 		_update_scale()
 
-var hover_enabled: bool:
-	get: return _hover_enabled
+var accepts_input: bool:
+	get: return _accepts_input
 	set(value):
-		_hover_enabled = value
+		_accepts_input = value
 		if not value:
 			if _state == State.HOVER:
 				_state = State.NORMAL

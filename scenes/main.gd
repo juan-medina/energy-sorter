@@ -5,12 +5,12 @@
 extends Node2D
 
 const ENERGY_COLORS: Array[Color] = [
-	Color8(230, 159, 0),   # #E69F00 (orange)
-	Color8(86, 180, 233),  # #56B4E9 (sky blue)
-	Color8(0, 158, 115),   # #009E73 (green)
-	Color8(240, 228, 66),  # #F0E442 (yellow)
-	Color8(0, 114, 178),   # #0072B2 (blue)
-	Color8(213, 94, 0)     # #D55E00 (vermillion)
+	Color8(230, 159, 0), # #E69F00 (orange)
+	Color8(86, 180, 233), # #56B4E9 (sky blue)
+	Color8(0, 158, 115), # #009E73 (green)
+	Color8(240, 228, 66), # #F0E442 (yellow)
+	Color8(0, 114, 178), # #0072B2 (blue)
+	Color8(213, 94, 0) # #D55E00 (vermillion)
 ]
 const MAX_BATTERIES: int = 8
 
@@ -92,7 +92,7 @@ func check_end_condition() -> void:
 		_message_label.text = "All Energy Sorted : You win!"
 		game_over = true
 		for b: Battery in _batteries:
-			b.hover_enabled = false
+			b.accepts_input = false
 	else:
 		var has_possible_move: bool = false
 		for i: int in range(MAX_BATTERIES):
@@ -117,4 +117,4 @@ func check_end_condition() -> void:
 			_message_label.text = "No more moves : Game Over"
 			game_over = true
 			for b: Battery in _batteries:
-				b.hover_enabled = false
+				b.accepts_input = false
