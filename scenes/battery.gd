@@ -58,6 +58,8 @@ func add_energy(color: Color) -> void:
     _current_energy += 1
     if is_closed:
         _body.modulate = _energies[0]
+    else:
+        _body.modulate = Color.WHITE
 
 func remove_energy(amount: int) -> void:
     if _current_energy - amount < 0:

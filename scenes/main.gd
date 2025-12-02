@@ -31,6 +31,8 @@ var _selected_energy: Array[Color] = []
 var _game_over: bool = false
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
+var _saved_batteries_state: Array = []
+
 func _ready() -> void:
 	_batteries.resize(MAX_BATTERIES)
 	for i: int in range(MAX_BATTERIES):
@@ -59,6 +61,20 @@ func _new_game() -> void:
 	for idx: int in selected_indices:
 		var color: Color = ENERGY_COLORS[idx]
 		_distribute_color(color, 4, empty_index)
+
+	for battery: Battery in _batteries:
+		_saved_batteries_state.append(battery._energies.duplicate())
+
+func _reset_game() -> void:
+	_message_label.text = ""
+	_game_over = false
+	for i: int in range(MAX_BATTERIES):
+		var battery: Battery = _batteries[i]
+		battery.reset()
+		var saved_energies: Array[Color] = _saved_batteries_state[i]
+		for color: Color in saved_energies:
+			if color != Color.BLACK:
+				battery.add_energy(color)
 
 func _distribute_color(color: Color, units: int, empty_index: int) -> void:
 	var distributed: int = 0
@@ -140,5 +156,4 @@ func _on_new_button_button_up() -> void:
 
 
 func _on_reset_button_button_up() -> void:
-	print("Resetting game...")
-	_new_game()
+	_reset_game()
