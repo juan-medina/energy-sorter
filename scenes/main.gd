@@ -39,9 +39,9 @@ func _ready() -> void:
 		battery_node.clicked.connect(_on_battery_clicked.bind(i))
 
 	_rng.randomize()
-	reset()
+	_new_game()
 
-func reset() -> void:
+func _new_game() -> void:
 	_message_label.text = ""
 	_game_over = false
 	for i: int in range(MAX_BATTERIES):
@@ -58,9 +58,9 @@ func reset() -> void:
 
 	for idx: int in selected_indices:
 		var color: Color = ENERGY_COLORS[idx]
-		distribute_color(color, 4, empty_index)
+		_distribute_color(color, 4, empty_index)
 
-func distribute_color(color: Color, units: int, empty_index: int) -> void:
+func _distribute_color(color: Color, units: int, empty_index: int) -> void:
 	var distributed: int = 0
 
 	while distributed < units:
@@ -92,12 +92,12 @@ func _on_battery_clicked(index: int) -> void:
 			for color: Color in _selected_energy:
 				_batteries[index].add_energy(color)
 
-			check_end_condition()
+			_check_end_condition()
 
 		_batteries[_origin_battery].is_selected = false
 		_origin_battery = -1
 
-func check_end_condition() -> void:
+func _check_end_condition() -> void:
 	var all_sorted: bool = true
 	for battery: Battery in _batteries:
 		if not (battery.is_closed or battery.is_empty):
@@ -134,3 +134,6 @@ func check_end_condition() -> void:
 			_game_over = true
 			for b: Battery in _batteries:
 				b.accepts_input = false
+
+func _on_new_button_button_up() -> void:
+	_new_game()

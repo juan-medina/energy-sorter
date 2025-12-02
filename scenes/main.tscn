@@ -41,7 +41,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="ResetButton" type="Button" parent="UI/LayoutControl"]
+[node name="NewButton" type="Button" parent="UI/LayoutControl"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -57,7 +57,7 @@ grow_vertical = 0
 size_flags_horizontal = 4
 size_flags_vertical = 8
 focus_mode = 0
-text = "Reset!"
+text = "New"
 
 [node name="MessageLabel" type="Label" parent="UI/LayoutControl"]
 layout_mode = 1
@@ -75,4 +75,4 @@ grow_vertical = 0
 theme_override_font_sizes/font_size = 20
 horizontal_alignment = 1
 
-[connection signal="button_up" from="UI/LayoutControl/ResetButton" to="." method="reset"]
+[connection signal="button_up" from="UI/LayoutControl/NewButton" to="." method="_on_new_button_button_up"]
