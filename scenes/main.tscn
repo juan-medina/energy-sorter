@@ -7,28 +7,28 @@
 script = ExtResource("1_0xm2m")
 
 [node name="Battery1" parent="." instance=ExtResource("2_0xm2m")]
-position = Vector2(231, 124)
+position = Vector2(217, 124)
 
 [node name="Battery2" parent="." instance=ExtResource("2_0xm2m")]
-position = Vector2(291, 124)
+position = Vector2(277, 124)
 
 [node name="Battery3" parent="." instance=ExtResource("2_0xm2m")]
-position = Vector2(351, 124)
+position = Vector2(337, 124)
 
 [node name="Battery4" parent="." instance=ExtResource("2_0xm2m")]
-position = Vector2(411, 124)
+position = Vector2(397, 124)
 
 [node name="Battery5" parent="." instance=ExtResource("2_0xm2m")]
-position = Vector2(231, 222)
+position = Vector2(217, 222)
 
 [node name="Battery6" parent="." instance=ExtResource("2_0xm2m")]
-position = Vector2(291, 222)
+position = Vector2(277, 222)
 
 [node name="Battery7" parent="." instance=ExtResource("2_0xm2m")]
-position = Vector2(351, 222)
+position = Vector2(337, 222)
 
 [node name="Battery8" parent="." instance=ExtResource("2_0xm2m")]
-position = Vector2(411, 222)
+position = Vector2(397, 222)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -41,24 +41,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="NewButton" type="Button" parent="UI/LayoutControl"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -15.0
-offset_top = -60.0
-offset_right = 15.0
-offset_bottom = -29.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_horizontal = 4
-size_flags_vertical = 8
-focus_mode = 0
-text = "New"
-
 [node name="MessageLabel" type="Label" parent="UI/LayoutControl"]
 layout_mode = 1
 anchors_preset = 7
@@ -67,12 +49,56 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -42.5
-offset_top = -110.0
+offset_top = -95.0
 offset_right = 42.5
-offset_bottom = -82.0
+offset_bottom = -67.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 20
 horizontal_alignment = 1
 
-[connection signal="button_up" from="UI/LayoutControl/NewButton" to="." method="_on_new_button_button_up"]
+[node name="Buttons" type="Control" parent="UI/LayoutControl"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -69.0
+offset_right = 75.0
+offset_bottom = -19.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="NewButton" type="Button" parent="UI/LayoutControl/Buttons"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -31.0
+offset_right = 45.0
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+focus_mode = 0
+text = "New"
+
+[node name="ResetButton" type="Button" parent="UI/LayoutControl/Buttons"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -45.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+focus_mode = 0
+text = "Reset"
+
+[connection signal="button_up" from="UI/LayoutControl/Buttons/NewButton" to="." method="_on_new_button_button_up"]
+[connection signal="button_up" from="UI/LayoutControl/Buttons/ResetButton" to="." method="_on_reset_button_button_up"]

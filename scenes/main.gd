@@ -137,3 +137,8 @@ func _check_end_condition() -> void:
 
 func _on_new_button_button_up() -> void:
 	_new_game()
+
+
+func _on_reset_button_button_up() -> void:
+	print("Resetting game...")
+	_new_game()
