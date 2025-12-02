@@ -22,7 +22,7 @@ var _batteries: Array[Battery] = []
 
 var _origin_battery: int = -1
 var _selected_energy: Array[Color] = []
-var game_over: bool = false
+var _game_over: bool = false
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 func _ready() -> void:
@@ -37,7 +37,7 @@ func _ready() -> void:
 
 func reset() -> void:
 	_message_label.text = ""
-	game_over = false
+	_game_over = false
 	for i: int in range(MAX_BATTERIES):
 		_batteries[i].reset()
 
@@ -92,7 +92,7 @@ func check_end_condition() -> void:
 
 	if all_sorted:
 		_message_label.text = &"All Energy Sorted : You win!"
-		game_over = true
+		_game_over = true
 		for b: Battery in _batteries:
 			b.accepts_input = false
 	else:
@@ -117,6 +117,6 @@ func check_end_condition() -> void:
 
 		if not has_possible_move:
 			_message_label.text = &"No more moves : Game Over"
-			game_over = true
+			_game_over = true
 			for b: Battery in _batteries:
 				b.accepts_input = false
