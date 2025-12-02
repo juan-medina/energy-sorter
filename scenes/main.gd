@@ -5,14 +5,20 @@
 extends Node2D
 
 const ENERGY_COLORS: Array[Color] = [
-	Color8(230, 159, 0), # #E69F00 (orange)
-	Color8(86, 180, 233), # #56B4E9 (sky blue)
-	Color8(0, 158, 115), # #009E73 (green)
-	Color8(240, 228, 66), # #F0E442 (yellow)
-	Color8(0, 114, 178), # #0072B2 (blue)
-	Color8(213, 94, 0) # #D55E00 (vermillion)
+	Color8(31, 119, 180), # #1F77B4 blue
+	Color8(255, 127, 14), # #FF7F0E orange
+	Color8(44, 160, 44), # #2CA02C green
+	Color8(214, 39, 40), # #D62728 red
+	Color8(148, 103, 189), # #9467BD purple
+	Color8(140, 86, 75), # #8C564B brown
+	Color8(227, 119, 194), # #E377C2 pink
+	Color8(255, 215, 0), # #FFD700 gold
+	Color8(0, 128, 128), # #008080 teal
+	Color8(23, 190, 207) # #17BECF cyan
 ]
 const MAX_BATTERIES: int = 8
+
+var max_colors_used: int = MAX_BATTERIES - 2
 
 var _batteries: Array[Battery] = []
 @onready var _message_label: Label = $UI/LayoutControl/MessageLabel
@@ -42,8 +48,16 @@ func reset() -> void:
 		_batteries[i].reset()
 
 	var empty_index: int = _rng.randi_range(0, MAX_BATTERIES - 1)
+	var colors_to_use: int = clamp(max_colors_used, 1, ENERGY_COLORS.size())
 
-	for color: Color in ENERGY_COLORS:
+	var selected_indices: Array = []
+	while selected_indices.size() < colors_to_use:
+		var idx: int = _rng.randi_range(0, ENERGY_COLORS.size() - 1)
+		if not idx in selected_indices:
+			selected_indices.append(idx)
+
+	for idx: int in selected_indices:
+		var color: Color = ENERGY_COLORS[idx]
 		distribute_color(color, 4, empty_index)
 
 func distribute_color(color: Color, units: int, empty_index: int) -> void:
