@@ -22,34 +22,19 @@ var max_colors_used: int = MAX_BATTERIES - 2
 
 var _batteries: Array[Battery] = []
 @onready var _message_label: Label = $UI/LayoutControl/MessageLabel
-@onready var _battery_nodes: Array[Battery] = [
-	$Battery01,
-	$Battery02,
-	$Battery03,
-	$Battery04,
-	$Battery05,
-	$Battery06,
-	$Battery07,
-	$Battery08,
-	$Battery09,
-	$Battery10,
-	$Battery11,
-	$Battery12
-]
 
 var _origin_battery: int = -1
 var _selected_energy: Array[Color] = []
 var _game_over: bool = false
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
-
 var _saved_batteries_state: Array = []
 
 func _ready() -> void:
 	_batteries.resize(MAX_BATTERIES)
+	_saved_batteries_state.resize(MAX_BATTERIES)
 	for i: int in range(MAX_BATTERIES):
-		var battery_node: Battery = _battery_nodes[i]
-		_batteries[i] = battery_node
-		battery_node.clicked.connect(_on_battery_clicked.bind(i))
+		_batteries[i] = get_node("Battery%02d" % (i + 1)) as Battery
+		_batteries[i].clicked.connect(_on_battery_clicked.bind(i))
 
 	_rng.randomize()
 	_new_game()
@@ -73,8 +58,8 @@ func _new_game() -> void:
 		var color: Color = ENERGY_COLORS[idx]
 		_distribute_color(color, 4, empty_index)
 
-	for battery: Battery in _batteries:
-		_saved_batteries_state.append(battery._energies.duplicate())
+	for i: int in range(MAX_BATTERIES):
+		_saved_batteries_state[i] = _batteries[i]._energies.duplicate()
 
 func _reset_game() -> void:
 	_message_label.text = ""

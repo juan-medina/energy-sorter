@@ -102,6 +102,8 @@ func reset() -> void:
     for sprite: Sprite2D in _energy_sprites:
         sprite.modulate = Color.WHITE
         sprite.visible = false
+    for idx: int in range(_energies.size()):
+        _energies[idx] = Color.BLACK
     _body.modulate = Color.WHITE
     _state = State.NORMAL
     _accepts_input = true
