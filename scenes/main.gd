@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 extends Node2D
+class_name Main
 
 const ENERGY_COLORS: Array[Color] = [
 	Color8(31, 119, 180), # #1F77B4 blue
@@ -27,11 +28,9 @@ var _origin_battery: int = -1
 var _selected_energy: Array[Color] = []
 var _game_over: bool = false
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
-var _saved_batteries_state: Array = []
 
 func _ready() -> void:
 	_batteries.resize(MAX_BATTERIES)
-	_saved_batteries_state.resize(MAX_BATTERIES)
 	for i: int in range(MAX_BATTERIES):
 		_batteries[i] = get_node("Battery%02d" % (i + 1)) as Battery
 		_batteries[i].clicked.connect(_on_battery_clicked.bind(i))
@@ -59,18 +58,14 @@ func _new_game() -> void:
 		_distribute_color(color, 4, empty_index)
 
 	for i: int in range(MAX_BATTERIES):
-		_saved_batteries_state[i] = _batteries[i]._energies.duplicate()
+		_batteries[i].save_state()
 
 func _reset_game() -> void:
 	_message_label.text = ""
 	_game_over = false
 	for i: int in range(MAX_BATTERIES):
 		var battery: Battery = _batteries[i]
-		battery.reset()
-		var saved_energies: Array[Color] = _saved_batteries_state[i]
-		for color: Color in saved_energies:
-			if color != Color.BLACK:
-				battery.add_energy(color)
+		battery.load_state()
 
 func _distribute_color(color: Color, units: int, empty_index: int) -> void:
 	var distributed: int = 0

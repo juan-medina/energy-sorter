@@ -10,38 +10,35 @@ signal clicked
 const MAX_ENERGY: int = 4
 
 @onready var _body: Sprite2D = $Body
-var _energies: Array[Color] = []
 var _energy_sprites: Array[Sprite2D] = []
-var _current_energy: int = 0
-var _accepts_input: bool = true
 
-enum State {NORMAL, HOVER, SELECTED}
-var _state: int = State.NORMAL
+var _state: BatteryState = BatteryState.new()
+var _saved_state : BatteryState = BatteryState.new()
 
 var is_full: bool:
-    get: return _current_energy == MAX_ENERGY
+    get: return _state.current_energy == MAX_ENERGY
 
 var is_empty: bool:
-    get: return _current_energy == 0
+    get: return _state.current_energy == 0
 
 var is_closed: bool:
     get:
         if not is_full:
             return false
-        var first_color: Color = _energies[0]
-        for color: Color in _energies:
+        var first_color: Color = _state.energies[0]
+        for color: Color in _state.energies:
             if color != first_color:
                 return false
         return true
 
 var is_selected: bool:
-    get: return _state == State.SELECTED
+    get: return _state.status == BatteryState.Status.SELECTED
     set(value):
-        _state = State.SELECTED if value else State.NORMAL
+        _state.status = BatteryState.Status.SELECTED if value else BatteryState.Status.NORMAL
         _update_scale()
 
 func _ready() -> void:
-    _energies.resize(MAX_ENERGY)
+    _state.energies.resize(MAX_ENERGY)
     _energy_sprites.resize(MAX_ENERGY)
     for i: int in range(MAX_ENERGY):
         _energy_sprites[i] = _body.get_node("Energy%d" % (i + 1)) as Sprite2D
@@ -50,36 +47,36 @@ func _ready() -> void:
     _update_scale()
 
 func add_energy(color: Color) -> void:
-    if _current_energy == MAX_ENERGY:
+    if _state.current_energy == MAX_ENERGY:
         return
-    _energies[_current_energy] = color
-    _energy_sprites[_current_energy].modulate = color
-    _energy_sprites[_current_energy].visible = true
-    _current_energy += 1
+    _state.energies[_state.current_energy] = color
+    _energy_sprites[_state.current_energy].modulate = color
+    _energy_sprites[_state.current_energy].visible = true
+    _state.current_energy += 1
     if is_closed:
-        _body.modulate = _energies[0]
+        _body.modulate = _state.energies[0]
     else:
         _body.modulate = Color.WHITE
 
 func remove_energy(amount: int) -> void:
-    if _current_energy - amount < 0:
+    if _state.current_energy - amount < 0:
         return
-    for i: int in range(_current_energy - amount, _current_energy):
+    for i: int in range(_state.current_energy - amount, _state.current_energy):
         _energy_sprites[i].modulate = Color.WHITE
         _energy_sprites[i].visible = false
-    _current_energy -= amount
+    _state.current_energy -= amount
 
 func get_top_energies() -> Array[Color]:
     var list: Array[Color] = []
-    if _current_energy == 0:
+    if _state.current_energy == 0:
         return list
-    if _current_energy == 1:
-        list.append(_energies[0])
+    if _state.current_energy == 1:
+        list.append(_state.energies[0])
         return list
-    var top_color: Color = _energies[_current_energy - 1]
-    var i: int = _current_energy - 1
+    var top_color: Color = _state.energies[_state.current_energy - 1]
+    var i: int = _state.current_energy - 1
     while i >= 0:
-        if _energies[i] == top_color:
+        if _state.energies[i] == top_color:
             list.append(top_color)
         else:
             break
@@ -93,59 +90,78 @@ func can_get_energy(energy: Array[Color]) -> bool:
         return true
     if energy.is_empty():
         return false
-    if energy.size() + _current_energy > MAX_ENERGY:
+    if energy.size() + _state.current_energy > MAX_ENERGY:
         return false
-    return _energies[_current_energy - 1] == energy[0]
+    return _state.energies[_state.current_energy - 1] == energy[0]
 
 func reset() -> void:
-    _current_energy = 0
+    _state.current_energy = 0
     for sprite: Sprite2D in _energy_sprites:
         sprite.modulate = Color.WHITE
         sprite.visible = false
-    for idx: int in range(_energies.size()):
-        _energies[idx] = Color.BLACK
+    for idx: int in range(_state.energies.size()):
+        _state.energies[idx] = Color.BLACK
     _body.modulate = Color.WHITE
-    _state = State.NORMAL
-    _accepts_input = true
+    _state.status = BatteryState.Status.NORMAL
+    _state.accepts_input = true
     _update_scale()
 
 func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) -> void:
     if event is InputEventMouseButton:
         var mb: InputEventMouseButton = event as InputEventMouseButton
         if mb.pressed == true:
-            if not _accepts_input:
+            if not _state.accepts_input:
                 return
             if is_closed:
                 return
             clicked.emit()
 
 func _on_mouse_entered() -> void:
-    if not _accepts_input:
+    if not _state.accepts_input:
         return
-    if _state != State.SELECTED:
-        _state = State.HOVER
+    if _state.status != BatteryState.Status.SELECTED:
+        _state.status = BatteryState.Status.HOVER
         _update_scale()
 
 func _on_mouse_exited() -> void:
-    if not _accepts_input:
+    if not _state.accepts_input:
         return
-    if _state != State.SELECTED:
-        _state = State.NORMAL
+    if _state.status != BatteryState.Status.SELECTED:
+        _state.status = BatteryState.Status.NORMAL
         _update_scale()
 
 var accepts_input: bool:
-    get: return _accepts_input
+    get: return _state.accepts_input
     set(value):
-        _accepts_input = value
+        _state.accepts_input = value
         if not value:
-            if _state == State.HOVER:
-                _state = State.NORMAL
+            if _state.status == BatteryState.Status.HOVER:
+                _state.status = BatteryState.Status.NORMAL
                 _update_scale()
 
 func _update_scale() -> void:
-    if _state == State.SELECTED:
+    if _state.status == BatteryState.Status.SELECTED:
         scale = Vector2.ONE * 1.5
-    elif _state == State.HOVER:
+    elif _state.status == BatteryState.Status.HOVER:
         scale = Vector2.ONE * 1.2
     else:
         scale = Vector2.ONE
+
+func save_state() -> void:
+    _saved_state = _state.duplicate()
+
+func load_state() -> void:
+    reset()
+    _state = _saved_state.duplicate()
+    _update_scale()
+    for i: int in range(MAX_ENERGY):
+        if i < _state.current_energy:
+            _energy_sprites[i].modulate = _state.energies[i]
+            _energy_sprites[i].visible = true
+        else:
+            _energy_sprites[i].modulate = Color.WHITE
+            _energy_sprites[i].visible = false
+    if is_closed:
+        _body.modulate = _state.energies[0]
+    else:
+        _body.modulate = Color.WHITE
