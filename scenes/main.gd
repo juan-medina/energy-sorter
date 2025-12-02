@@ -16,14 +16,25 @@ const ENERGY_COLORS: Array[Color] = [
 	Color8(0, 128, 128), # #008080 teal
 	Color8(23, 190, 207) # #17BECF cyan
 ]
-const MAX_BATTERIES: int = 8
+const MAX_BATTERIES: int = 12
 
 var max_colors_used: int = MAX_BATTERIES - 2
 
 var _batteries: Array[Battery] = []
 @onready var _message_label: Label = $UI/LayoutControl/MessageLabel
 @onready var _battery_nodes: Array[Battery] = [
-    $Battery1, $Battery2, $Battery3, $Battery4, $Battery5, $Battery6, $Battery7, $Battery8
+	$Battery01,
+	$Battery02,
+	$Battery03,
+	$Battery04,
+	$Battery05,
+	$Battery06,
+	$Battery07,
+	$Battery08,
+	$Battery09,
+	$Battery10,
+	$Battery11,
+	$Battery12
 ]
 
 var _origin_battery: int = -1
