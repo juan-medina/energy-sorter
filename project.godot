@@ -11,8 +11,8 @@ config_version=5
 [application]
 
 config/name="Energy Sorter"
-run/main_scene="res://scenes/main.tscn"
-config/features=PackedStringArray("4.5", "GL Compatibility")
+run/main_scene="res://src/scenes/main_scene.tscn"
+config/features=PackedStringArray("4.5", "C#", "Mobile")
 config/icon="uid://dsjtlvj8bhuuy"
 config/windows_native_icon="res://resources/juan_medina.ico"
 
@@ -47,8 +47,7 @@ theme/custom_font="uid://cnwxfr0xumro1"
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
 anti_aliasing/screen_space_roughness_limiter/enabled=false
 environment/defaults/default_clear_color=Color(0.078431375, 0.19215687, 0.23137255, 1)

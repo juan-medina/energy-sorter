@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bm3t4ppebfvfl"]
 
 [ext_resource type="Texture2D" uid="uid://6y3ole1nli7" path="res://resources/Sprite-0001.png" id="1_8fmpm"]
-[ext_resource type="Script" uid="uid://duymfur56klj7" path="res://scenes/battery.gd" id="1_qise7"]
+[ext_resource type="Script" uid="uid://dv7jfer5gqytm" path="res://src/nodes/BatteryNode.cs" id="1_k4egp"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0xm2m"]
 atlas = ExtResource("1_8fmpm")
@@ -14,28 +14,32 @@ region = Rect2(68, 10, 24, 12)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1bvp3"]
 size = Vector2(36, 58)
 
-[node name="Battery" type="Area2D"]
-script = ExtResource("1_qise7")
+[node name="BatteryNode" type="Area2D"]
+script = ExtResource("1_k4egp")
 
 [node name="Body" type="Sprite2D" parent="."]
 texture = SubResource("AtlasTexture_0xm2m")
 
 [node name="Energy1" type="Sprite2D" parent="Body"]
+visible = false
 position = Vector2(0, 8)
 texture = SubResource("AtlasTexture_h2yge")
 offset = Vector2(0, 9)
 
 [node name="Energy2" type="Sprite2D" parent="Body"]
+visible = false
 position = Vector2(0, 3)
 texture = SubResource("AtlasTexture_h2yge")
 offset = Vector2(0, 4)
 
 [node name="Energy3" type="Sprite2D" parent="Body"]
+visible = false
 position = Vector2(0, -2)
 texture = SubResource("AtlasTexture_h2yge")
 offset = Vector2(0, -1)
 
 [node name="Energy4" type="Sprite2D" parent="Body"]
+visible = false
 position = Vector2(0, -11)
 texture = SubResource("AtlasTexture_h2yge")
 offset = Vector2(0, -1)

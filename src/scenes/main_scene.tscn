@@ -1,45 +1,45 @@
 [gd_scene load_steps=3 format=3 uid="uid://041pr00jvjc"]
 
-[ext_resource type="Script" uid="uid://dnlbox04sq5gv" path="res://scenes/main.gd" id="1_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://bm3t4ppebfvfl" path="res://scenes/battery.tscn" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://dxim3d6gypfle" path="res://src/scenes/MainScene.cs" id="1_fp51l"]
+[ext_resource type="PackedScene" uid="uid://bm3t4ppebfvfl" path="res://src/nodes/battery_node.tscn" id="1_s4uru"]
 
-[node name="Main" type="Node2D"]
-script = ExtResource("1_0xm2m")
+[node name="MainScene" type="Node2D"]
+script = ExtResource("1_fp51l")
 
-[node name="Battery05" parent="." instance=ExtResource("2_0xm2m")]
+[node name="Battery05" parent="." instance=ExtResource("1_s4uru")]
 position = Vector2(192, 124)
 
-[node name="Battery01" parent="." instance=ExtResource("2_0xm2m")]
+[node name="Battery01" parent="." instance=ExtResource("1_s4uru")]
 position = Vector2(272, 124)
 
-[node name="Battery02" parent="." instance=ExtResource("2_0xm2m")]
+[node name="Battery02" parent="." instance=ExtResource("1_s4uru")]
 position = Vector2(352, 124)
 
-[node name="Battery06" parent="." instance=ExtResource("2_0xm2m")]
+[node name="Battery06" parent="." instance=ExtResource("1_s4uru")]
 position = Vector2(432, 124)
 
-[node name="Battery07" parent="." instance=ExtResource("2_0xm2m")]
+[node name="Battery07" parent="." instance=ExtResource("1_s4uru")]
 position = Vector2(192, 222)
 
-[node name="Battery03" parent="." instance=ExtResource("2_0xm2m")]
+[node name="Battery03" parent="." instance=ExtResource("1_s4uru")]
 position = Vector2(272, 222)
 
-[node name="Battery04" parent="." instance=ExtResource("2_0xm2m")]
+[node name="Battery04" parent="." instance=ExtResource("1_s4uru")]
 position = Vector2(352, 222)
 
-[node name="Battery08" parent="." instance=ExtResource("2_0xm2m")]
+[node name="Battery08" parent="." instance=ExtResource("1_s4uru")]
 position = Vector2(432, 222)
 
-[node name="Battery10" parent="." instance=ExtResource("2_0xm2m")]
+[node name="Battery10" parent="." instance=ExtResource("1_s4uru")]
 position = Vector2(512, 124)
 
-[node name="Battery12" parent="." instance=ExtResource("2_0xm2m")]
+[node name="Battery12" parent="." instance=ExtResource("1_s4uru")]
 position = Vector2(512, 222)
 
-[node name="Battery09" parent="." instance=ExtResource("2_0xm2m")]
+[node name="Battery09" parent="." instance=ExtResource("1_s4uru")]
 position = Vector2(112, 124)
 
-[node name="Battery11" parent="." instance=ExtResource("2_0xm2m")]
+[node name="Battery11" parent="." instance=ExtResource("1_s4uru")]
 position = Vector2(114, 222)
 
 [node name="UI" type="CanvasLayer" parent="."]
