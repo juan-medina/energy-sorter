@@ -1,7 +1,10 @@
-﻿using System;
+﻿// SPDX-FileCopyrightText: 2025 Juan Medina
+// SPDX-License-Identifier: MIT
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Godot;
+using System.Linq;
 
 namespace EnergySorter.model;
 
@@ -9,26 +12,11 @@ public class Puzzle
 {
 	private const int MaxBatteries = 12;
 
-	private static readonly Color[] EnergyColors =
-	[
-		new(31f / 255f, 119f / 255f, 180f / 255f), // #1F77B4 blue
-		new(255f / 255f, 127f / 255f, 14f / 255f), // #FF7F0E orange
-		new(44f / 255f, 160f / 255f, 44f / 255f), // #2CA02C green
-		new(214f / 255f, 39f / 255f, 40f / 255f), // #D62728 red
-		new(148f / 255f, 103f / 255f, 189f / 255f), // #9467BD purple
-		new(140f / 255f, 86f / 255f, 75f / 255f), // #8C564B brown
-		new(227f / 255f, 119f / 255f, 194f / 255f), // #E377C2 pink
-		new(255f / 255f, 215f / 255f, 0f / 255f), // #FFD700 gold
-		new(0f / 255f, 128f / 255f, 128f / 255f), // #008080 teal
-		new(23f / 255f, 190f / 255f, 207f / 255f) // #17BECF cyan
-	];
-
 	private readonly List<Battery> _batteries = [];
 	public Battery[] Batteries => _batteries.ToArray();
 
 	public Puzzle(int fullBatteries, int emptyBatteries)
 	{
-
 		// Summary: It constructs a puzzle by creating a fixed set of battery slots, reserving some as empty,
 		// picking a few distinct colors, and then randomly dropping a fixed number of energy units
 		// of each chosen color into the non-empty slots until every chosen color has placed its full quota.
@@ -40,10 +28,10 @@ public class Puzzle
 
 		var limitFullBatteries = Math.Min(fullBatteries, MaxBatteries - emptyBatteries);
 
-		Debug.Assert(limitFullBatteries <= EnergyColors.Length,
-			$"A puzzle can not have more than {EnergyColors.Length} full batteries with unique colors");
+		Debug.Assert(limitFullBatteries <= Battery.MaxEnergyTypes,
+			$"A puzzle can not have more than {Battery.MaxEnergyTypes} full batteries with unique type");
 
-		limitFullBatteries = Math.Min(limitFullBatteries, EnergyColors.Length);
+		limitFullBatteries = Math.Min(limitFullBatteries, Battery.MaxEnergyTypes);
 
 		var randomEmptyBatteriesIndex = new HashSet<int>();
 		var random = new Random();
@@ -53,11 +41,11 @@ public class Puzzle
 			randomEmptyBatteriesIndex.Add(index);
 		}
 
-		var randomColorsIndex = new HashSet<int>();
-		while (randomColorsIndex.Count < limitFullBatteries)
+		var randomEnergyType = new HashSet<int>();
+		while (randomEnergyType.Count < limitFullBatteries)
 		{
-			var index = random.Next(0, EnergyColors.Length);
-			randomColorsIndex.Add(index);
+			var type = random.Next(0, Battery.MaxEnergyTypes);
+			randomEnergyType.Add(type);
 		}
 
 		var totalBatteries = limitFullBatteries + emptyBatteries;
@@ -66,10 +54,10 @@ public class Puzzle
 			_batteries.Add(new Battery());
 		}
 
-		var colorsEnumerator = randomColorsIndex.GetEnumerator();
-		while (colorsEnumerator.MoveNext())
+		var energyTypeEnumerator = randomEnergyType.GetEnumerator();
+		while (energyTypeEnumerator.MoveNext())
 		{
-			var index = colorsEnumerator.Current;
+			var type = energyTypeEnumerator.Current + 1;
 			var energyToDrop = Battery.MaxEnergy;
 			while (energyToDrop > 0)
 			{
@@ -79,9 +67,27 @@ public class Puzzle
 				var possibleBattery = _batteries[batteryIndex];
 				if (possibleBattery.IsFull) continue;
 
-				possibleBattery.AddEnergy(EnergyColors[index]);
+				possibleBattery.AddEnergy(type);
 				energyToDrop--;
 			}
 		}
+	}
+
+	public string Export()
+	{
+		var result = "";
+
+		foreach (var battery in _batteries)
+		{
+			var energies = battery.Energies;
+			var batteryStr = energies.Aggregate("", (current, type) => current + $"{type + 1:x}");
+
+			var remain = Battery.MaxEnergy - energies.Length;
+			for (var i = 0; i < remain; i++) batteryStr += "0";
+
+			result += batteryStr;
+		}
+
+		return result;
 	}
 }
