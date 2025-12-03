@@ -39,7 +39,6 @@ public partial class BatteryNode : Area2D
 		{
 			sprite.Visible = false;
 			sprite.Modulate = Colors.White;
-			sprite.Visible = false;
 		}
 
 		var limit = Math.Min(energies.Length, Battery.MaxEnergy);
@@ -49,7 +48,6 @@ public partial class BatteryNode : Area2D
 			var sprite = _energySprites[idx];
 			sprite.Modulate = color;
 			sprite.Visible = true;
-			idx++;
 		}
 	}
 }

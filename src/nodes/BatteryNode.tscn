@@ -21,26 +21,22 @@ script = ExtResource("1_k4egp")
 texture = SubResource("AtlasTexture_0xm2m")
 
 [node name="Energy1" type="Sprite2D" parent="Body"]
-visible = false
-position = Vector2(0, 8)
+position = Vector2(0, 9)
 texture = SubResource("AtlasTexture_h2yge")
 offset = Vector2(0, 9)
 
 [node name="Energy2" type="Sprite2D" parent="Body"]
-visible = false
-position = Vector2(0, 3)
+position = Vector2(0, 4)
 texture = SubResource("AtlasTexture_h2yge")
 offset = Vector2(0, 4)
 
 [node name="Energy3" type="Sprite2D" parent="Body"]
-visible = false
-position = Vector2(0, -2)
+position = Vector2(0, -1)
 texture = SubResource("AtlasTexture_h2yge")
 offset = Vector2(0, -1)
 
 [node name="Energy4" type="Sprite2D" parent="Body"]
-visible = false
-position = Vector2(0, -11)
+position = Vector2(0, -10)
 texture = SubResource("AtlasTexture_h2yge")
 offset = Vector2(0, -1)
 

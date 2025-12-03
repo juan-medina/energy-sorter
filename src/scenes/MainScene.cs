@@ -12,19 +12,33 @@ public partial class MainScene : Node2D
 {
 	private const int MaxBatteries = 12;
 
+	private Puzzle _puzzle;
 	private readonly List<BatteryNode> _batteries = [];
-	private readonly List<Battery> _batteryModels = [];
 
-    public override void _Ready()
-    {
+	public override void _Ready()
+	{
 		for (var i = 0; i < MaxBatteries; i++)
-        {
-			var batteryModel = new Battery();
-			batteryModel.AddEnergy(Colors.Red);
-			_batteryModels.Add(batteryModel);
-			var battery = GetNode<BatteryNode>($"Battery{i+1:00}");
-			battery.SetModel(batteryModel);
-			_batteries.Add(battery);
-        }
-    }
+		{
+			var batteryNode = GetNode<BatteryNode>($"Battery{i + 1:00}");
+			_batteries.Add(batteryNode);
+		}
+
+		NewPuzzle();
+	}
+
+	private void NewPuzzle()
+	{
+		_puzzle = new Puzzle(10, 2);
+		UpdateBatteriesVisuals();
+	}
+
+	private void UpdateBatteriesVisuals()
+	{
+		for (var i = 0; i < MaxBatteries; i++) _batteries[i].SetModel(_puzzle.Batteries[i]);
+	}
+
+	private void OnNewButtonUp()
+	{
+		NewPuzzle();
+	}
 }

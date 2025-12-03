@@ -22,5 +22,11 @@ public class Battery
 
 	public Color[] Energies => [.. _energies];
 
-	public void AddEnergy(Color color) => _energies.Add(color);
+	public bool IsFull => _currentState == State.Full;
+
+	public void AddEnergy(Color color)
+	{
+		_energies.Add(color);
+		if (_energies.Count >= MaxEnergy) _currentState = State.Full;
+	}
 }
