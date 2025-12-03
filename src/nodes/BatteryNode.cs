@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using EnergySorter.model;
 using Godot;
 
@@ -28,6 +29,8 @@ public partial class BatteryNode : Area2D
 	private Battery _battery;
 	private readonly List<Sprite2D> _energySprites = [];
 
+	private Sprite2D _bodySprite;
+
 	public override void _Ready()
 	{
 		_battery = new Battery();
@@ -35,7 +38,18 @@ public partial class BatteryNode : Area2D
 		{
 			_energySprites.Add(GetNode<Sprite2D>($"Body/Energy{i + 1}"));
 		}
+
+		_bodySprite = GetNode<Sprite2D>("Body");
 	}
+
+	public enum State
+	{
+		Normal,
+		Selected,
+		Hovered,
+	}
+
+	private State _state = State.Normal;
 
 	public void SetModel(Battery battery)
 	{
@@ -62,8 +76,44 @@ public partial class BatteryNode : Area2D
 			var sprite = _energySprites[idx];
 			Debug.Assert(type >= 1 && type <= EnergyColors.Length, "Update Visuals: Energy type is out of range");
 			if (type < 1 || type > EnergyColors.Length) continue;
-			sprite.Modulate = EnergyColors[type-1];
+			sprite.Modulate = EnergyColors[type - 1];
 			sprite.Visible = true;
 		}
+
+		var scale = 1.0f;
+		if (!_battery.IsClosed)
+		{
+			scale = _state switch
+			{
+				State.Selected => 1.5f,
+				State.Hovered => 1.2f,
+				_ => 1.0f
+			};
+		}
+
+		_bodySprite.Scale = new Vector2(scale, scale);
+	}
+
+	private void OnMouseEntered()
+	{
+		if (_state != State.Selected)
+			_state = State.Hovered;
+		UpdateVisuals();
+	}
+
+	private void OnMouseExited()
+	{
+		if (_state != State.Selected)
+			_state = State.Normal;
+		UpdateVisuals();
+	}
+
+	[SuppressMessage("ReSharper", "UnusedParameter.Local")]
+	private void OnInputEvent(Node viewPort, InputEvent inputEvent, int shapeIdx)
+	{
+		if (_battery.IsClosed) return;
+		if (inputEvent is not InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: true }) return;
+		_state = _state == State.Selected ? State.Normal : State.Selected;
+		UpdateVisuals();
 	}
 }

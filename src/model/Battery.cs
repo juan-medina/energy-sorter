@@ -25,6 +25,7 @@ public class Battery
 	public int[] Energies => [.. _energies];
 
 	public bool IsFull => _currentState == State.Full;
+	public bool IsClosed => _currentState == State.Closed;
 
 	public void AddEnergy(int type)
 	{
