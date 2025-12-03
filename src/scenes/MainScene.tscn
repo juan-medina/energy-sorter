@@ -7,39 +7,51 @@
 script = ExtResource("1_sakgv")
 
 [node name="Battery05" parent="." instance=ExtResource("2_dyarj")]
+visible = false
 position = Vector2(192, 124)
 
 [node name="Battery01" parent="." instance=ExtResource("2_dyarj")]
+visible = false
 position = Vector2(272, 124)
 
 [node name="Battery02" parent="." instance=ExtResource("2_dyarj")]
+visible = false
 position = Vector2(352, 124)
 
 [node name="Battery06" parent="." instance=ExtResource("2_dyarj")]
+visible = false
 position = Vector2(432, 124)
 
 [node name="Battery07" parent="." instance=ExtResource("2_dyarj")]
+visible = false
 position = Vector2(192, 222)
 
 [node name="Battery03" parent="." instance=ExtResource("2_dyarj")]
+visible = false
 position = Vector2(272, 222)
 
 [node name="Battery04" parent="." instance=ExtResource("2_dyarj")]
+visible = false
 position = Vector2(352, 222)
 
 [node name="Battery08" parent="." instance=ExtResource("2_dyarj")]
+visible = false
 position = Vector2(432, 222)
 
 [node name="Battery10" parent="." instance=ExtResource("2_dyarj")]
+visible = false
 position = Vector2(512, 124)
 
 [node name="Battery12" parent="." instance=ExtResource("2_dyarj")]
+visible = false
 position = Vector2(512, 222)
 
 [node name="Battery09" parent="." instance=ExtResource("2_dyarj")]
+visible = false
 position = Vector2(112, 124)
 
 [node name="Battery11" parent="." instance=ExtResource("2_dyarj")]
+visible = false
 position = Vector2(114, 222)
 
 [node name="UI" type="CanvasLayer" parent="."]

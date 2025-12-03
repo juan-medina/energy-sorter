@@ -34,7 +34,17 @@ public partial class MainScene : Node2D
 
 	private void UpdateBatteriesVisuals()
 	{
-		for (var i = 0; i < MaxBatteries; i++) _batteries[i].SetModel(_puzzle.Batteries[i]);
+		for (var i = 0; i < MaxBatteries; i++)
+		{
+			_batteries[i].Visible = false;
+		}
+
+		var total = _puzzle.Batteries.Length;
+		for (var i = 0; i < total; i++)
+		{
+			_batteries[i].Visible = true;
+			_batteries[i].SetModel(_puzzle.Batteries[i]);
+		}
 	}
 
 	private void OnNewButtonUp()
