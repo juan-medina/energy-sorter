@@ -28,6 +28,13 @@ public class Puzzle
 
 	public Puzzle(int fullBatteries, int emptyBatteries)
 	{
+
+		// Summary: It constructs a puzzle by creating a fixed set of battery slots, reserving some as empty,
+		// picking a few distinct colors, and then randomly dropping a fixed number of energy units
+		// of each chosen color into the non-empty slots until every chosen color has placed its full quota.
+		//
+		// The objective is to create random puzzles with a mix of full and empty batteries so the player
+		// can sort the energies by color
 		Debug.Assert(fullBatteries + emptyBatteries <= MaxBatteries,
 			$"A puzzle can not have more than {MaxBatteries} batteries");
 
@@ -67,16 +74,10 @@ public class Puzzle
 			while (energyToDrop > 0)
 			{
 				var batteryIndex = random.Next(0, totalBatteries);
-				if (randomEmptyBatteriesIndex.Contains(batteryIndex))
-				{
-					continue;
-				}
+				if (randomEmptyBatteriesIndex.Contains(batteryIndex)) continue;
 
 				var possibleBattery = _batteries[batteryIndex];
-				if (possibleBattery.IsFull)
-				{
-					continue;
-				}
+				if (possibleBattery.IsFull) continue;
 
 				possibleBattery.AddEnergy(EnergyColors[index]);
 				energyToDrop--;
