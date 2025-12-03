@@ -38,6 +38,8 @@ public class Battery
 
 		_energies.Add(type);
 
-		if (_energies.Count >= MaxEnergy) _currentState = State.Full;
+		if (_energies.Count < MaxEnergy) return;
+		var firstType = _energies[0];
+		_currentState = _energies.TrueForAll(x => x == firstType) ? State.Closed : State.Full;
 	}
 }
