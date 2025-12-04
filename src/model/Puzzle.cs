@@ -103,4 +103,10 @@ public class Puzzle
 	}
 
 	public bool IsSolved => _batteries.All(b => b.IsEmpty || b.IsClosed);
+
+	public bool HasMoreMoves =>
+		// Summary: It checks if we are able to move any energy from one battery to another
+		_batteries.Where(source => !source.IsEmpty && !source.IsClosed).Any(source =>
+			_batteries.Where(target => !ReferenceEquals(target, source) && !target.IsClosed && !target.IsFull)
+				.Any(target => target.CanGetEnergyFrom(source)));
 }

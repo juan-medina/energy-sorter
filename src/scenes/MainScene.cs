@@ -88,12 +88,13 @@ public partial class MainScene : Node2D
 			batteryNode.TransferEnergyFrom(_selectedBattery);
 			_selectedBattery.Deselect();
 			_selectedBattery = null;
-			CheckWinCondition();
+			CheckEndCondition();
 		}
 	}
 
-	private void CheckWinCondition()
+	private void CheckEndCondition()
 	{
-		if (_puzzle.IsSolved) _messageLabel.Text = "All batteries are sorted! You win!";
+		if (_puzzle.IsSolved) _messageLabel.Text = "All energy is sorted! You win!";
+		else if (!_puzzle.HasMoreMoves) _messageLabel.Text = "Can't transfer any energy! You loose!";
 	}
 }
