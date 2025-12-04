@@ -15,6 +15,11 @@ public class Puzzle
 	private readonly List<Battery> _batteries = [];
 	public Battery[] Batteries => _batteries.ToArray();
 
+	private Puzzle()
+	{
+
+	}
+
 	public Puzzle(int fullBatteries, int emptyBatteries)
 	{
 		// Summary: It constructs a puzzle by creating a fixed set of battery slots, reserving some as empty,
@@ -71,6 +76,13 @@ public class Puzzle
 				energyToDrop--;
 			}
 		}
+	}
+
+	public Puzzle Clone()
+	{
+		var clone = new Puzzle();
+		foreach (var battery in _batteries) clone._batteries.Add(battery.Clone());
+		return clone;
 	}
 
 	public string Export()

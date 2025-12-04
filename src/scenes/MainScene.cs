@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using EnergySorter.model;
 using Godot;
 using BatteryNode = EnergySorter.nodes.BatteryNode;
@@ -13,6 +14,8 @@ public partial class MainScene : Node2D
 	private const int MaxBatteries = 12;
 
 	private Puzzle _puzzle;
+	private Puzzle _savedPuzzle;
+
 	private readonly List<BatteryNode> _batteries = [];
 
 	public override void _Ready()
@@ -30,7 +33,9 @@ public partial class MainScene : Node2D
 	private void NewPuzzle()
 	{
 		_puzzle = new Puzzle(6, 2);
+		_savedPuzzle = _puzzle.Clone();
 		UpdateBatteriesVisuals();
+		Debug.WriteLine($"New Puzzle Created: {_puzzle.Export()}");
 	}
 
 	private void UpdateBatteriesVisuals()
@@ -46,6 +51,12 @@ public partial class MainScene : Node2D
 	}
 
 	private void OnNewButtonUp() => NewPuzzle();
+
+	private void OnResetButtonUp()
+	{
+		_puzzle = _savedPuzzle.Clone();
+		UpdateBatteriesVisuals();
+	}
 
 	private BatteryNode _selectedBattery;
 

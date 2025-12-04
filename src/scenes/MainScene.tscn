@@ -125,3 +125,4 @@ focus_mode = 0
 text = "Reset"
 
 [connection signal="button_up" from="UI/LayoutControl/Buttons/NewButton" to="." method="OnNewButtonUp"]
+[connection signal="button_up" from="UI/LayoutControl/Buttons/ResetButton" to="." method="OnResetButtonUp"]

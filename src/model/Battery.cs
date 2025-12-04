@@ -29,6 +29,13 @@ public class Battery
 	public bool IsClosed => _currentState == State.Closed;
 	public bool IsEmpty => _currentState == State.Empty;
 
+	public Battery Clone()
+	{
+		var clone = new Battery();
+		foreach (var energy in _energies) clone.AddEnergy(energy);
+		return clone;
+	}
+
 	public void AddEnergy(int type)
 	{
 		Debug.Assert(type > 0 & type <= MaxEnergyTypes,
