@@ -56,6 +56,7 @@ public partial class MainScene : Node2D
 	{
 		NewPuzzle();
 		_messageLabel.Text = string.Empty;
+		EnableAllBatteries();
 	}
 
 	private void OnResetButtonUp()
@@ -63,6 +64,7 @@ public partial class MainScene : Node2D
 		_puzzle = _savedPuzzle.Clone();
 		UpdateBatteriesVisuals();
 		_messageLabel.Text = string.Empty;
+		EnableAllBatteries();
 	}
 
 	private BatteryNode _selectedBattery;
@@ -94,7 +96,23 @@ public partial class MainScene : Node2D
 
 	private void CheckEndCondition()
 	{
-		if (_puzzle.IsSolved) _messageLabel.Text = "All energy is sorted! You win!";
-		else if (!_puzzle.HasMoreMoves) _messageLabel.Text = "Can't transfer any energy! You loose!";
+		if (!_puzzle.IsSolved)
+		{
+			if (_puzzle.HasMoreMoves) return;
+			_messageLabel.Text = "Can't transfer any energy! You loose!";
+		}
+		else
+			_messageLabel.Text = "All energy is sorted! You win!";
+
+		DisableAllBatteries();
+	}
+
+	private void DisableAllBatteries() => ChangeAllBatteriesEnabling(false);
+
+	private void EnableAllBatteries() => ChangeAllBatteriesEnabling(true);
+
+	private void ChangeAllBatteriesEnabling(bool enable)
+	{
+		foreach (var battery in _batteries) battery.Enabled = enable;
 	}
 }

@@ -31,8 +31,20 @@ public partial class BatteryNode : Area2D
 
 	private Battery _battery;
 	private readonly List<Sprite2D> _energySprites = [];
-
 	private Sprite2D _bodySprite;
+
+	private bool _enabled = true;
+
+	public bool Enabled
+	{
+		get => _enabled;
+		set
+		{
+			_enabled = value;
+			_state = State.Normal;
+			UpdateVisuals();
+		}
+	}
 
 	public override void _Ready()
 	{
@@ -95,6 +107,7 @@ public partial class BatteryNode : Area2D
 
 	private void OnMouseEntered()
 	{
+		if(!_enabled) return;
 		if (_state != State.Selected)
 			_state = State.Hovered;
 		UpdateVisuals();
@@ -102,6 +115,7 @@ public partial class BatteryNode : Area2D
 
 	private void OnMouseExited()
 	{
+		if(!_enabled) return;
 		if (_state != State.Selected)
 			_state = State.Normal;
 		UpdateVisuals();
@@ -110,6 +124,7 @@ public partial class BatteryNode : Area2D
 	[SuppressMessage("ReSharper", "UnusedParameter.Local")]
 	private void OnInputEvent(Node viewPort, InputEvent inputEvent, int shapeIdx)
 	{
+		if(!_enabled) return;
 		if (inputEvent is not InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: true }) return;
 		EmitSignal(SignalName.OnClicked, this);
 	}
