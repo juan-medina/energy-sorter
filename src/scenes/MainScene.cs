@@ -21,6 +21,7 @@ public partial class MainScene : Node2D
 		{
 			var batteryNode = GetNode<BatteryNode>($"Battery{i + 1:00}");
 			_batteries.Add(batteryNode);
+			batteryNode.OnClicked += OnBatteryClicked;
 		}
 
 		NewPuzzle();
@@ -28,7 +29,7 @@ public partial class MainScene : Node2D
 
 	private void NewPuzzle()
 	{
-		_puzzle = new Puzzle(10, 2);
+		_puzzle = new Puzzle(6, 2);
 		UpdateBatteriesVisuals();
 	}
 
@@ -45,4 +46,30 @@ public partial class MainScene : Node2D
 	}
 
 	private void OnNewButtonUp() => NewPuzzle();
+
+	private BatteryNode _selectedBattery;
+
+	private void OnBatteryClicked(BatteryNode batteryNode)
+	{
+		if (_selectedBattery == null)
+		{
+			if (batteryNode.IsEmpty() || batteryNode.IsClosed()) return;
+			_selectedBattery = batteryNode;
+			_selectedBattery.Select();
+		}
+		else
+		{
+			if (_selectedBattery == batteryNode)
+			{
+				_selectedBattery.Deselect();
+				_selectedBattery = null;
+				return;
+			}
+
+			if (!batteryNode.CanGetEnergyFrom(_selectedBattery)) return;
+			batteryNode.TransferEnergyFrom(_selectedBattery);
+			_selectedBattery.Deselect();
+			_selectedBattery = null;
+		}
+	}
 }

@@ -12,6 +12,9 @@ namespace EnergySorter.nodes;
 
 public partial class BatteryNode : Area2D
 {
+	[Signal]
+	public delegate void OnClickedEventHandler(BatteryNode node);
+
 	private static readonly Color[] EnergyColors =
 	[
 		new(31f / 255f, 119f / 255f, 180f / 255f), // #1F77B4 blue
@@ -78,7 +81,8 @@ public partial class BatteryNode : Area2D
 		}
 
 		var scale = 1.0f;
-		if (!_battery.IsClosed) scale = _state switch
+		if (!_battery.IsClosed)
+			scale = _state switch
 			{
 				State.Selected => 1.5f,
 				State.Hovered => 1.2f,
@@ -86,6 +90,7 @@ public partial class BatteryNode : Area2D
 			};
 
 		_bodySprite.Scale = new Vector2(scale, scale);
+		_bodySprite.Modulate = IsClosed() ? EnergyColors[energies[0] - 1] : Colors.White;
 	}
 
 	private void OnMouseEntered()
@@ -105,9 +110,32 @@ public partial class BatteryNode : Area2D
 	[SuppressMessage("ReSharper", "UnusedParameter.Local")]
 	private void OnInputEvent(Node viewPort, InputEvent inputEvent, int shapeIdx)
 	{
-		if (_battery.IsClosed) return;
 		if (inputEvent is not InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: true }) return;
-		_state = _state == State.Selected ? State.Normal : State.Selected;
+		EmitSignal(SignalName.OnClicked, this);
+	}
+
+	public void Select()
+	{
+		_state = State.Selected;
 		UpdateVisuals();
+	}
+
+	public void Deselect()
+	{
+		_state = State.Normal;
+		UpdateVisuals();
+	}
+
+	public bool IsEmpty() => _battery.IsEmpty;
+	public bool IsClosed() => _battery.IsClosed;
+
+	public bool CanGetEnergyFrom(BatteryNode other) => _battery.CanGetEnergyFrom(other._battery);
+
+	public void TransferEnergyFrom(BatteryNode other)
+	{
+		_battery.TransferEnergyFrom(other._battery);
+
+		UpdateVisuals();
+		other.UpdateVisuals();
 	}
 }
