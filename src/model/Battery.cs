@@ -57,9 +57,6 @@ public class Battery
 			var firstType = _energies[0];
 			_currentState = _energies.TrueForAll(x => x == firstType) ? State.Closed : State.Full;
 		}
-
-		Debug.WriteLine(
-			$"add energy {type}, new state {_currentState}, count: {_energies.Count} energies: {string.Join(",", _energies)}");
 	}
 
 	public void RemoveLastEnergy()
@@ -71,9 +68,6 @@ public class Battery
 
 		_currentState = State.Normal;
 		if (_energies.Count == 0) _currentState = State.Empty;
-
-		Debug.WriteLine(
-			$"remove last energy, new state {_currentState}, count: {_energies.Count} energies: {string.Join(",", _energies)}");
 	}
 
 	public int[] GetTopEnergy()

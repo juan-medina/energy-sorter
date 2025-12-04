@@ -41,7 +41,7 @@ public class Puzzle
 		var random = new Random();
 		while (randomEmptyBatteriesIndex.Count < emptyBatteries)
 		{
-			var index = random.Next(0, MaxBatteries);
+			var index = random.Next(0, limitFullBatteries + emptyBatteries);
 			randomEmptyBatteriesIndex.Add(index);
 		}
 
