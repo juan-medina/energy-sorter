@@ -17,9 +17,11 @@ public partial class MainScene : Node2D
 	private Puzzle _savedPuzzle;
 
 	private readonly List<BatteryNode> _batteries = [];
+	private Label _messageLabel;
 
 	public override void _Ready()
 	{
+		_messageLabel = GetNode<Label>("UI/LayoutControl/MessageLabel");
 		for (var i = 0; i < MaxBatteries; i++)
 		{
 			var batteryNode = GetNode<BatteryNode>($"Battery{i + 1:00}");
@@ -50,12 +52,17 @@ public partial class MainScene : Node2D
 		}
 	}
 
-	private void OnNewButtonUp() => NewPuzzle();
+	private void OnNewButtonUp()
+	{
+		NewPuzzle();
+		_messageLabel.Text = string.Empty;
+	}
 
 	private void OnResetButtonUp()
 	{
 		_puzzle = _savedPuzzle.Clone();
 		UpdateBatteriesVisuals();
+		_messageLabel.Text = string.Empty;
 	}
 
 	private BatteryNode _selectedBattery;
@@ -81,6 +88,12 @@ public partial class MainScene : Node2D
 			batteryNode.TransferEnergyFrom(_selectedBattery);
 			_selectedBattery.Deselect();
 			_selectedBattery = null;
+			CheckWinCondition();
 		}
+	}
+
+	private void CheckWinCondition()
+	{
+		if (_puzzle.IsSolved) _messageLabel.Text = "All batteries are sorted! You win!";
 	}
 }

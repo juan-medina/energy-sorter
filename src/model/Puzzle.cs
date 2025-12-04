@@ -17,7 +17,6 @@ public class Puzzle
 
 	private Puzzle()
 	{
-
 	}
 
 	public Puzzle(int fullBatteries, int emptyBatteries)
@@ -102,4 +101,6 @@ public class Puzzle
 
 		return result;
 	}
+
+	public bool IsSolved => _batteries.All(b => b.IsEmpty || b.IsClosed);
 }
