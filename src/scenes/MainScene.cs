@@ -34,10 +34,7 @@ public partial class MainScene : Node2D
 
 	private void UpdateBatteriesVisuals()
 	{
-		for (var i = 0; i < MaxBatteries; i++)
-		{
-			_batteries[i].Visible = false;
-		}
+		for (var i = 0; i < MaxBatteries; i++) _batteries[i].Visible = false;
 
 		var total = _puzzle.Batteries.Length;
 		for (var i = 0; i < total; i++)
@@ -47,8 +44,5 @@ public partial class MainScene : Node2D
 		}
 	}
 
-	private void OnNewButtonUp()
-	{
-		NewPuzzle();
-	}
+	private void OnNewButtonUp() => NewPuzzle();
 }

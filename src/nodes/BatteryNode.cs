@@ -34,10 +34,7 @@ public partial class BatteryNode : Area2D
 	public override void _Ready()
 	{
 		_battery = new Battery();
-		for (var i = 0; i < Battery.MaxEnergy; i++)
-		{
-			_energySprites.Add(GetNode<Sprite2D>($"Body/Energy{i + 1}"));
-		}
+		for (var i = 0; i < Battery.MaxEnergy; i++) _energySprites.Add(GetNode<Sprite2D>($"Body/Energy{i + 1}"));
 
 		_bodySprite = GetNode<Sprite2D>("Body");
 	}
@@ -81,15 +78,12 @@ public partial class BatteryNode : Area2D
 		}
 
 		var scale = 1.0f;
-		if (!_battery.IsClosed)
-		{
-			scale = _state switch
+		if (!_battery.IsClosed) scale = _state switch
 			{
 				State.Selected => 1.5f,
 				State.Hovered => 1.2f,
 				_ => 1.0f
 			};
-		}
 
 		_bodySprite.Scale = new Vector2(scale, scale);
 	}
