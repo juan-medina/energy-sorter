@@ -9,7 +9,7 @@ using BatteryNode = EnergySorter.nodes.BatteryNode;
 
 namespace EnergySorter.scenes;
 
-public partial class MainScene : Node2D
+public partial class GameScene : Node2D
 {
 	private const int MaxBatteries = 12;
 

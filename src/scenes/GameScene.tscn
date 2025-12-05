@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://041pr00jvjc"]
 
-[ext_resource type="Script" uid="uid://dxim3d6gypfle" path="res://src/scenes/MainScene.cs" id="1_sakgv"]
+[ext_resource type="Script" uid="uid://dxim3d6gypfle" path="res://src/scenes/GameScene.cs" id="1_sakgv"]
 [ext_resource type="PackedScene" uid="uid://bm3t4ppebfvfl" path="res://src/nodes/BatteryNode.tscn" id="2_dyarj"]
 
-[node name="MainScene" type="Node2D"]
+[node name="GameScene" type="Node2D"]
 script = ExtResource("1_sakgv")
 
 [node name="Battery05" parent="." instance=ExtResource("2_dyarj")]
