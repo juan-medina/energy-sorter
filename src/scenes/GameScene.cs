@@ -19,9 +19,15 @@ public partial class GameScene : Node2D
 	private readonly List<BatteryNode> _batteries = [];
 	private Label _messageLabel;
 
+	private PackedScene _backScene;
+	private const string BackScenePath = "res://src/scenes/MenuScene.tscn";
+
 	public override void _Ready()
 	{
 		_messageLabel = GetNode<Label>("UI/LayoutControl/MessageLabel");
+		_backScene = ResourceLoader.Load<PackedScene>(BackScenePath);
+		Debug.Assert(_backScene != null, "Back scene could not be loaded in GameScene");
+
 		for (var i = 0; i < MaxBatteries; i++)
 		{
 			var batteryNode = GetNode<BatteryNode>($"Battery{i + 1:00}");
@@ -52,11 +58,9 @@ public partial class GameScene : Node2D
 		}
 	}
 
-	private void OnNewButtonUp()
+	private void OnBackButtonUp()
 	{
-		NewPuzzle();
-		_messageLabel.Text = string.Empty;
-		EnableAllBatteries();
+		GetTree().ChangeSceneToPacked(_backScene);
 	}
 
 	private void OnResetButtonUp()

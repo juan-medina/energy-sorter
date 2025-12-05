@@ -8,13 +8,16 @@ namespace EnergySorter.scenes;
 
 public partial class MenuScene : Node2D
 {
-	[Export] private PackedScene _nextScene;
+	private PackedScene _nextScene;
+	private const string NextScenePath = "res://src/scenes/GameScene.tscn";
 
 	private Button _playButton;
 
 	public override void _Ready()
 	{
 		_playButton = GetNode<Button>("UI/LayoutControl/PlayButton");
+		_nextScene = ResourceLoader.Load<PackedScene>(NextScenePath);
+		Debug.Assert(_nextScene != null, "Next scene could not be loaded in MenuScene");
 	}
 
 	private void OnPlayButtonUp()
