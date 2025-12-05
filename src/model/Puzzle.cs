@@ -84,6 +84,32 @@ public class Puzzle
 		return clone;
 	}
 
+	public static Puzzle Import(string data)
+	{
+		Debug.Assert(data.Length % Battery.MaxEnergy == 0,
+			"The puzzle data length must be a multiple of the battery max energy.");
+
+		var puzzle = new Puzzle();
+
+		var batteries = data.Select((c, i) => new { Char = c, Index = i })
+			.GroupBy(x => x.Index / Battery.MaxEnergy)
+			.Select(g => new string(g.Select(x => x.Char).ToArray()));
+
+		foreach (var batteryData in batteries)
+		{
+			var battery = new Battery();
+
+			foreach (var type in batteryData
+				         .Select(ch => Convert.ToInt32(ch.ToString(), 16))
+				         .Where(type => type > 0))
+				battery.AddEnergy(type);
+
+			puzzle._batteries.Add(battery);
+		}
+
+		return puzzle;
+	}
+
 	public string Export()
 	{
 		var result = "";
@@ -91,7 +117,7 @@ public class Puzzle
 		foreach (var battery in _batteries)
 		{
 			var energies = battery.Energies;
-			var batteryStr = energies.Aggregate("", (current, type) => current + $"{type + 1:x}");
+			var batteryStr = energies.Aggregate("", (current, type) => current + $"{type:x}");
 
 			var remain = Battery.MaxEnergy - energies.Length;
 			for (var i = 0; i < remain; i++) batteryStr += "0";

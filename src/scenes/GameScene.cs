@@ -11,6 +11,7 @@ namespace EnergySorter.scenes;
 
 public partial class GameScene : Node2D
 {
+	private const string LevelsPath = "res://levels/levels.txt";
 	private const int MaxBatteries = 12;
 
 	private Puzzle _puzzle;
@@ -18,13 +19,24 @@ public partial class GameScene : Node2D
 
 	private readonly List<BatteryNode> _batteries = [];
 	private Label _messageLabel;
+	private Label _levelLabel;
+	private Button _resetButton;
+	private Button _nextButton;
 
 	private PackedScene _backScene;
 	private const string BackScenePath = "res://src/scenes/MenuScene.tscn";
 
+	private readonly List<string> _levelsImports = [];
+	private int _currentLevelNumber = 1;
+
 	public override void _Ready()
 	{
 		_messageLabel = GetNode<Label>("UI/LayoutControl/MessageLabel");
+		_levelLabel = GetNode<Label>("UI/LayoutControl/LevelLabel");
+
+		_resetButton = GetNode<Button>("UI/LayoutControl/Buttons/ResetButton");
+		_nextButton = GetNode<Button>("UI/LayoutControl/Buttons/NextButton");
+
 		_backScene = ResourceLoader.Load<PackedScene>(BackScenePath);
 		Debug.Assert(_backScene != null, "Back scene could not be loaded in GameScene");
 
@@ -35,7 +47,43 @@ public partial class GameScene : Node2D
 			batteryNode.OnClicked += OnBatteryClicked;
 		}
 
-		NewPuzzle();
+		ReadLevels();
+		LoadLevel(_currentLevelNumber);
+	}
+
+	private void ReadLevels()
+	{
+		if (!FileAccess.FileExists(LevelsPath))
+		{
+			Debug.WriteLine($"Levels file not found at path: {LevelsPath}");
+			return;
+		}
+
+		using var file = FileAccess.Open(LevelsPath, FileAccess.ModeFlags.Read);
+		var stringLevels = file.GetAsText();
+		var levels = stringLevels.Split('\n');
+		foreach (var level in levels)
+		{
+			var trimmedLevel = level.Trim();
+			if (trimmedLevel.Length > 0) _levelsImports.Add(trimmedLevel);
+		}
+
+		Debug.Assert(_levelsImports.Count > 0, "No levels were loaded from the levels file.");
+		Debug.WriteLine("Total Levels Loaded: " + _levelsImports.Count);
+	}
+
+	private void LoadLevel(int number)
+	{
+		Debug.Assert(number > 0 && number <= _levelsImports.Count, "Level number out of range.");
+		var levelData = _levelsImports[number - 1];
+		_puzzle = Puzzle.Import(levelData);
+		_savedPuzzle = _puzzle.Clone();
+
+		_levelLabel.Text = $"Level: {number}";
+		_nextButton.Hide();
+		_resetButton.Show();
+
+		UpdateBatteriesVisuals();
 	}
 
 	private void NewPuzzle()
@@ -106,7 +154,20 @@ public partial class GameScene : Node2D
 			_messageLabel.Text = "Can't transfer any energy! You loose!";
 		}
 		else
-			_messageLabel.Text = "All energy is sorted! You win!";
+		{
+			_resetButton.Hide();
+
+			if (_currentLevelNumber == _levelsImports.Count)
+			{
+				_messageLabel.Text = "Congratulations! You've completed all levels!";
+				_nextButton.Hide();
+			}
+			else
+			{
+				_messageLabel.Text = "All energy is sorted! You win!";
+				_nextButton.Show();
+			}
+		}
 
 		DisableAllBatteries();
 	}
@@ -118,5 +179,13 @@ public partial class GameScene : Node2D
 	private void ChangeAllBatteriesEnabling(bool enable)
 	{
 		foreach (var battery in _batteries) battery.Enabled = enable;
+	}
+
+	private void OnNextButtonUp()
+	{
+		_messageLabel.Text = string.Empty;
+		_currentLevelNumber++;
+		LoadLevel(_currentLevelNumber);
+		EnableAllBatteries();
 	}
 }

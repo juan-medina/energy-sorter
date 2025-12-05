@@ -1,12 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://041pr00jvjc"]
+[gd_scene load_steps=3 format=3 uid="uid://041pr00jvjc"]
 
 [ext_resource type="Script" uid="uid://dxim3d6gypfle" path="res://src/scenes/GameScene.cs" id="1_sakgv"]
-[ext_resource type="PackedScene" uid="uid://bmf3naf326tji" path="res://src/scenes/MenuScene.tscn" id="2_3s2t5"]
 [ext_resource type="PackedScene" uid="uid://bm3t4ppebfvfl" path="res://src/nodes/BatteryNode.tscn" id="2_dyarj"]
 
 [node name="GameScene" type="Node2D"]
 script = ExtResource("1_sakgv")
-_menuScene = ExtResource("2_3s2t5")
 
 [node name="Battery05" parent="." instance=ExtResource("2_dyarj")]
 visible = false
@@ -67,6 +65,20 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="LevelLabel" type="Label" parent="UI/LayoutControl"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -117.0
+offset_top = 25.0
+offset_right = 117.0
+offset_bottom = 62.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 30
+text = "Level: "
+horizontal_alignment = 1
+
 [node name="MessageLabel" type="Label" parent="UI/LayoutControl"]
 layout_mode = 1
 anchors_preset = 7
@@ -126,5 +138,23 @@ size_flags_vertical = 8
 focus_mode = 0
 text = "Reset"
 
+[node name="NextButton" type="Button" parent="UI/LayoutControl/Buttons"]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -45.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+focus_mode = 0
+text = "Next"
+
 [connection signal="button_up" from="UI/LayoutControl/Buttons/BackButton" to="." method="OnBackButtonUp"]
 [connection signal="button_up" from="UI/LayoutControl/Buttons/ResetButton" to="." method="OnResetButtonUp"]
+[connection signal="button_up" from="UI/LayoutControl/Buttons/NextButton" to="." method="OnNextButtonUp"]
