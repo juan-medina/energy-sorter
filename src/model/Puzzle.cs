@@ -45,12 +45,6 @@ public class Puzzle
 			randomEmptyBatteriesIndex.Add(index);
 		}
 
-		var randomEnergyType = new HashSet<int>();
-		while (randomEnergyType.Count < limitFullBatteries)
-		{
-			var type = random.Next(0, Battery.MaxEnergyTypes);
-			randomEnergyType.Add(type);
-		}
 
 		var totalBatteries = limitFullBatteries + emptyBatteries;
 		for (var i = 0; i < totalBatteries; i++)
@@ -58,10 +52,8 @@ public class Puzzle
 			_batteries.Add(new Battery());
 		}
 
-		var energyTypeEnumerator = randomEnergyType.GetEnumerator();
-		while (energyTypeEnumerator.MoveNext())
+		for (var type = 1; type <= limitFullBatteries; type++)
 		{
-			var type = energyTypeEnumerator.Current + 1;
 			var energyToDrop = Battery.MaxEnergy;
 			while (energyToDrop > 0)
 			{
@@ -69,7 +61,7 @@ public class Puzzle
 				if (randomEmptyBatteriesIndex.Contains(batteryIndex)) continue;
 
 				var possibleBattery = _batteries[batteryIndex];
-				if (possibleBattery.IsFull) continue;
+				if (possibleBattery.IsFull || possibleBattery.IsClosed) continue;
 
 				possibleBattery.AddEnergy(type);
 				energyToDrop--;
@@ -112,21 +104,19 @@ public class Puzzle
 
 	public string Export()
 	{
-		var result = "";
+		var sb = new System.Text.StringBuilder();
 
-		foreach (var battery in _batteries)
+		foreach (var energies in _batteries.Select(battery => battery.Energies.Where(t => t > 0).ToArray()))
 		{
-			var energies = battery.Energies;
-			var batteryStr = energies.Aggregate("", (current, type) => current + $"{type:x}");
+			foreach (var type in energies) sb.Append(type.ToString("x"));
 
-			var remain = Battery.MaxEnergy - energies.Length;
-			for (var i = 0; i < remain; i++) batteryStr += "0";
-
-			result += batteryStr;
+			var remain = Math.Max(0, Battery.MaxEnergy - energies.Length);
+			for (var i = 0; i < remain; i++) sb.Append('0');
 		}
 
-		return result;
+		return sb.ToString();
 	}
+
 
 	public bool IsSolved => _batteries.All(b => b.IsEmpty || b.IsClosed);
 
@@ -135,4 +125,58 @@ public class Puzzle
 		_batteries.Where(source => !source.IsEmpty && !source.IsClosed).Any(source =>
 			_batteries.Where(target => !ReferenceEquals(target, source) && !target.IsClosed && !target.IsFull)
 				.Any(target => target.CanGetEnergyFrom(source)));
+
+
+	public int Solve()
+	{
+		var best = int.MaxValue;
+		var visited = new Dictionary<string, int>();
+
+		// start from a clone of the current puzzle
+		var start = Clone();
+		if (start.IsSolved) return 0;
+
+		SolveRecursive(start, 0, ref best, visited);
+		return best == int.MaxValue ? -1 : best;
+	}
+
+	private static void SolveRecursive(Puzzle state, int depth, ref int best, Dictionary<string, int> visited)
+	{
+		// prune if we already have a better or equal solution
+		if (depth >= best) return;
+
+		// use Export() as the canonical state key
+		var key = state.Export();
+		if (visited.TryGetValue(key, out var prevDepth) && prevDepth <= depth) return;
+		visited[key] = depth;
+
+		if (state.IsSolved)
+		{
+			if (depth < best) best = depth;
+			return;
+		}
+
+		var n = state._batteries.Count;
+		for (var src = 0; src < n; src++)
+		{
+			var from = state._batteries[src];
+			if (from.IsEmpty || from.IsClosed) continue;
+
+			for (var dst = 0; dst < n; dst++)
+			{
+				if (src == dst) continue;
+
+				var to = state._batteries[dst];
+				if (to.IsFull || to.IsClosed) continue;
+				if (!to.CanGetEnergyFrom(from)) continue;
+
+				var next = state.Clone();
+				next._batteries[dst].TransferEnergyFrom(next._batteries[src]);
+
+				SolveRecursive(next, depth + 1, ref best, visited);
+			}
+		}
+	}
+
+	public bool ContainsClosedBattery => _batteries.Any(b => b.IsClosed);
 }

@@ -32,7 +32,8 @@ public class Battery
 	public Battery Clone()
 	{
 		var clone = new Battery();
-		foreach (var energy in _energies) clone.AddEnergy(energy);
+		clone._energies.AddRange(_energies);
+		clone._currentState = _currentState;
 		return clone;
 	}
 
