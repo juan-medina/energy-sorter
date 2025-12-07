@@ -20,13 +20,18 @@
 - The main scene instantiates multiple battery scenes. Each battery holds up to 4 "energy" color units.
 - Players click a battery to pick up a contiguous run of top-most energy units of the same color, then click another battery to place them if allowed by the rules.
 
+**Credits**
+
+- Developed by [Juan Medina](https://juan-medina.com).
+- Music by [Abstraction](https://abstractionmusic.com/) (licensed as Public Domain CC-0).
+
 **License**
 
 - This project is licensed under the MIT License — see `LICENSE` for details.
 
 **Contributing**
 
-- Feel free to open issues or pull requests. For code changes, follow the existing GDScript style and keep changes focused.
+- Feel free to open issues or pull requests. For code changes, follow the existing style and keep changes focused.
 
 **Contact**
 

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://041pr00jvjc"]
+[gd_scene load_steps=4 format=3 uid="uid://041pr00jvjc"]
 
 [ext_resource type="Script" uid="uid://dxim3d6gypfle" path="res://src/scenes/GameScene.cs" id="1_sakgv"]
 [ext_resource type="PackedScene" uid="uid://bm3t4ppebfvfl" path="res://src/nodes/BatteryNode.tscn" id="2_dyarj"]
+[ext_resource type="AudioStream" uid="uid://brfypojla5e5" path="res://resources/game.ogg" id="3_3s2t5"]
 
 [node name="GameScene" type="Node2D"]
 script = ExtResource("1_sakgv")
@@ -154,6 +155,13 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 focus_mode = 0
 text = "Next"
+
+[node name="Game" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(507, 252)
+stream = ExtResource("3_3s2t5")
+autoplay = true
+bus = &"Music"
+parameters/looping = true
 
 [connection signal="button_up" from="UI/LayoutControl/Buttons/BackButton" to="." method="OnBackButtonUp"]
 [connection signal="button_up" from="UI/LayoutControl/Buttons/ResetButton" to="." method="OnResetButtonUp"]
