@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2025 Juan Medina
 // SPDX-License-Identifier: MIT
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using EnergySorter.model;
@@ -26,6 +27,8 @@ public partial class GameScene : Node2D
 	private PackedScene _backScene;
 	private const string BackScenePath = "res://src/scenes/MenuScene.tscn";
 
+	private AudioStreamPlayer2D _buttonSound;
+
 	private readonly List<string> _levelsImports = [];
 	private int _currentLevelNumber = 1;
 
@@ -39,6 +42,8 @@ public partial class GameScene : Node2D
 
 		_backScene = ResourceLoader.Load<PackedScene>(BackScenePath);
 		Debug.Assert(_backScene != null, "Back scene could not be loaded in GameScene");
+
+		_buttonSound = GetNode<AudioStreamPlayer2D>("Button");
 
 		for (var i = 0; i < MaxBatteries; i++)
 		{
@@ -106,19 +111,6 @@ public partial class GameScene : Node2D
 		}
 	}
 
-	private void OnBackButtonUp()
-	{
-		GetTree().ChangeSceneToPacked(_backScene);
-	}
-
-	private void OnResetButtonUp()
-	{
-		_puzzle = _savedPuzzle.Clone();
-		UpdateBatteriesVisuals();
-		_messageLabel.Text = string.Empty;
-		EnableAllBatteries();
-	}
-
 	private BatteryNode _selectedBattery;
 
 	private void OnBatteryClicked(BatteryNode batteryNode)
@@ -181,11 +173,55 @@ public partial class GameScene : Node2D
 		foreach (var battery in _batteries) battery.Enabled = enable;
 	}
 
-	private void OnNextButtonUp()
+	private async void OnNextButtonUp()
 	{
-		_messageLabel.Text = string.Empty;
-		_currentLevelNumber++;
-		LoadLevel(_currentLevelNumber);
-		EnableAllBatteries();
+		try
+		{
+			_buttonSound.Play();
+
+			await ToSignal(_buttonSound, nameof(_buttonSound.Finished).ToLowerInvariant());
+
+			_messageLabel.Text = string.Empty;
+			_currentLevelNumber++;
+			LoadLevel(_currentLevelNumber);
+			EnableAllBatteries();
+		}
+		catch (Exception ex)
+		{
+			GD.PushError($"OnNextButtonUp error: {ex}");
+		}
+	}
+
+	private async void OnBackButtonUp()
+	{
+		try
+		{
+			_buttonSound.Play();
+			await ToSignal(_buttonSound, nameof(_buttonSound.Finished).ToLowerInvariant());
+
+			GetTree().ChangeSceneToPacked(_backScene);
+		}
+		catch (Exception ex)
+		{
+			GD.PushError($"OnNextButtonUp error: {ex}");
+		}
+	}
+
+	private async void OnResetButtonUp()
+	{
+		try
+		{
+			_buttonSound.Play();
+			await ToSignal(_buttonSound, nameof(_buttonSound.Finished).ToLowerInvariant());
+
+			_puzzle = _savedPuzzle.Clone();
+			UpdateBatteriesVisuals();
+			_messageLabel.Text = string.Empty;
+			EnableAllBatteries();
+		}
+		catch (Exception ex)
+		{
+			GD.PushError($"OnNextButtonUp error: {ex}");
+		}
 	}
 }

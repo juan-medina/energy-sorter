@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bmf3naf326tji"]
+[gd_scene load_steps=4 format=3 uid="uid://bmf3naf326tji"]
 
 [ext_resource type="Script" uid="uid://d1igm1g5lvn2c" path="res://src/scenes/MenuScene.cs" id="1_dpxdt"]
 [ext_resource type="AudioStream" uid="uid://cnuiluilpavbv" path="res://resources/menu.ogg" id="2_3f8rj"]
+[ext_resource type="AudioStream" uid="uid://byoqh488on0w6" path="res://resources/button.wav" id="3_weykh"]
 
 [node name="MenuScene" type="Node2D"]
 script = ExtResource("1_dpxdt")
@@ -55,5 +56,10 @@ stream = ExtResource("2_3f8rj")
 autoplay = true
 bus = &"Music"
 parameters/looping = true
+
+[node name="Button" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(248, 511)
+stream = ExtResource("3_weykh")
+bus = &"SFX"
 
 [connection signal="button_up" from="UI/LayoutControl/PlayButton" to="." method="OnPlayButtonUp"]
