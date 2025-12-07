@@ -24,15 +24,15 @@ public partial class GeneratorScene : Node2D
 
 	private void OnGeneratorButtonUp()
 	{
-		//GenerateLevels(150, 2, 1);
-		//GenerateLevels(150, 3, 2);
-		//GenerateLevels(150, 4, 2);
-		//GenerateLevels(150, 5, 2);
+		GenerateLevels(150, 2, 1);
+		GenerateLevels(150, 3, 2);
+		GenerateLevels(150, 4, 2);
+		GenerateLevels(150, 5, 2);
 		GenerateLevels(150, 6, 1);
-		//GenerateLevels(150, 7, 2);
-		//GenerateLevels(150, 8, 2);
-		//GenerateLevels(150, 9, 2);
-		//GenerateLevels(150, 10, 2);
+		GenerateLevels(150, 7, 2);
+		GenerateLevels(150, 8, 2);
+		GenerateLevels(150, 9, 2);
+		GenerateLevels(150, 10, 2);
 
 		for (var i = 0; i < _levels.Count; i++)
 		{
@@ -49,6 +49,7 @@ public partial class GeneratorScene : Node2D
 		List<LevelData> stepLevel = [];
 		for (var i = 1; i <= iterations; i++)
 		{
+			Debug.WriteLine($"Full: {fullBatteries} Empty: {emptyBatteries} - Generated level {i}/{iterations}");
 			var puzzle = new Puzzle(fullBatteries, emptyBatteries);
 			if (puzzle.IsSolved || puzzle.ContainsClosedBattery)
 			{
@@ -65,7 +66,6 @@ public partial class GeneratorScene : Node2D
 				FullBatteries = fullBatteries,
 				EmptyBatteries = emptyBatteries,
 			};
-			Debug.WriteLine($"Full: {fullBatteries} Empty: {emptyBatteries} - Generated level {i}/{iterations}");
 			stepLevel.Add(level);
 		}
 
