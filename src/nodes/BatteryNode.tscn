@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bm3t4ppebfvfl"]
+[gd_scene load_steps=7 format=3 uid="uid://bm3t4ppebfvfl"]
 
 [ext_resource type="Texture2D" uid="uid://6y3ole1nli7" path="res://resources/Sprite-0001.png" id="1_8fmpm"]
 [ext_resource type="Script" uid="uid://dv7jfer5gqytm" path="res://src/nodes/BatteryNode.cs" id="1_k4egp"]
+[ext_resource type="AudioStream" uid="uid://baye5veamod0p" path="res://resources/click.wav" id="3_7h3gy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0xm2m"]
 atlas = ExtResource("1_8fmpm")
@@ -42,6 +43,11 @@ offset = Vector2(0, -1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_1bvp3")
+
+[node name="Click" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(271, 337)
+stream = ExtResource("3_7h3gy")
+bus = &"SFX"
 
 [connection signal="input_event" from="." to="." method="OnInputEvent"]
 [connection signal="mouse_entered" from="." to="." method="OnMouseEntered"]

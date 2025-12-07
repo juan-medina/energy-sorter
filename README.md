@@ -24,6 +24,7 @@
 
 - Developed by [Juan Medina](https://juan-medina.com).
 - Music by [Abstraction](https://abstractionmusic.com/) (licensed as Public Domain CC-0).
+- SFX by [Helton Yan & Beto Bezerra](https://heltonyan.itch.io/pixelcombat?download) (licensed under Attribution 4.0 International).
 
 **License**
 

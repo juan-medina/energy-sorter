@@ -32,6 +32,7 @@ public partial class BatteryNode : Area2D
 	private Battery _battery;
 	private readonly List<Sprite2D> _energySprites = [];
 	private Sprite2D _bodySprite;
+	private AudioStreamPlayer2D _clickSound;
 
 	private bool _enabled = true;
 
@@ -52,6 +53,8 @@ public partial class BatteryNode : Area2D
 		for (var i = 0; i < Battery.MaxEnergy; i++) _energySprites.Add(GetNode<Sprite2D>($"Body/Energy{i + 1}"));
 
 		_bodySprite = GetNode<Sprite2D>("Body");
+
+		_clickSound = GetNode<AudioStreamPlayer2D>("Click");
 	}
 
 	public enum State
@@ -107,7 +110,7 @@ public partial class BatteryNode : Area2D
 
 	private void OnMouseEntered()
 	{
-		if(!_enabled) return;
+		if (!_enabled) return;
 		if (_state != State.Selected)
 			_state = State.Hovered;
 		UpdateVisuals();
@@ -115,7 +118,7 @@ public partial class BatteryNode : Area2D
 
 	private void OnMouseExited()
 	{
-		if(!_enabled) return;
+		if (!_enabled) return;
 		if (_state != State.Selected)
 			_state = State.Normal;
 		UpdateVisuals();
@@ -124,8 +127,10 @@ public partial class BatteryNode : Area2D
 	[SuppressMessage("ReSharper", "UnusedParameter.Local")]
 	private void OnInputEvent(Node viewPort, InputEvent inputEvent, int shapeIdx)
 	{
-		if(!_enabled) return;
+		if (!_enabled) return;
 		if (inputEvent is not InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: true }) return;
+		if (_clickSound.IsPlaying()) return;
+		_clickSound.Play();
 		EmitSignal(SignalName.OnClicked, this);
 	}
 

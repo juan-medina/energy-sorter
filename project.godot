@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.5", "C#", "Mobile")
 config/icon="uid://dsjtlvj8bhuuy"
 config/windows_native_icon="res://resources/juan_medina.ico"
 
+[audio]
+
+buses/default_bus_layout="uid://b0hwjuebk0oqa"
+
 [debug]
 
 gdscript/warnings/untyped_declaration=1
