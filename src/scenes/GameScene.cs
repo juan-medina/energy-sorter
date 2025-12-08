@@ -36,6 +36,9 @@ public partial class GameScene : Node2D
 
 	private PackedScene _sparkNode;
 
+	private int _lastSecondToNextRounded = -1;
+	private double _lastSecondToNext = -1;
+
 	public override void _Ready()
 	{
 		_messageLabel = GetNode<Label>("UI/LayoutControl/MessageLabel");
@@ -187,7 +190,7 @@ public partial class GameScene : Node2D
 			else
 			{
 				_messageLabel.Text = "All energy is sorted! You win!";
-				_nextButton.Show();
+				CountdownToNext();
 			}
 		}
 
@@ -207,6 +210,7 @@ public partial class GameScene : Node2D
 	{
 		try
 		{
+			_lastSecondToNextRounded = -1;
 			_buttonSound.Play();
 
 			await ToSignal(_buttonSound, nameof(_buttonSound.Finished).ToLowerInvariant());
@@ -257,5 +261,27 @@ public partial class GameScene : Node2D
 		{
 			GD.PushError($"OnNextButtonUp error: {ex}");
 		}
+	}
+
+	private void CountdownToNext()
+	{
+		_nextButton.Show();
+		_lastSecondToNext = 5.0;
+		_lastSecondToNextRounded = 5;
+		_nextButton.Text = $"Next ({_lastSecondToNextRounded})";
+	}
+
+	public override void _Process(double delta)
+	{
+		base._Process(delta);
+		if (_lastSecondToNextRounded == -1) return;
+
+		_lastSecondToNext -= delta;
+		var rounded = (int)Math.Ceiling(_lastSecondToNext);
+		if (rounded == _lastSecondToNextRounded) return;
+		_lastSecondToNextRounded = rounded;
+		_nextButton.Text = $"Next ({_lastSecondToNextRounded})";
+		if (rounded > 0) return;
+		OnNextButtonUp();
 	}
 }
