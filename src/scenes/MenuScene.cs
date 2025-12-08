@@ -3,7 +3,9 @@
 
 using System;
 using System.Diagnostics;
+using EnergySorter.globals;
 using Godot;
+
 
 namespace EnergySorter.scenes;
 
@@ -31,6 +33,8 @@ public partial class MenuScene : Node2D
 			_buttonSound.Play();
 			_playButton.Disabled = true;
 			await ToSignal(_buttonSound, nameof(_buttonSound.Finished).ToLowerInvariant());
+
+			await Fader.Instance.OutIn();
 
 			Debug.Assert(_nextScene != null, "Next scene is not assigned in the MenuScene");
 			GetTree().ChangeSceneToPacked(_nextScene);

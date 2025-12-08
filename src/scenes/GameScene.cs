@@ -4,9 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using EnergySorter.globals;
 using EnergySorter.model;
+using EnergySorter.nodes;
 using Godot;
-using BatteryNode = EnergySorter.nodes.BatteryNode;
+
 
 namespace EnergySorter.scenes;
 
@@ -181,6 +183,8 @@ public partial class GameScene : Node2D
 
 			await ToSignal(_buttonSound, nameof(_buttonSound.Finished).ToLowerInvariant());
 
+			await Fader.Instance.OutIn();
+
 			_messageLabel.Text = string.Empty;
 			_currentLevelNumber++;
 			LoadLevel(_currentLevelNumber);
@@ -199,6 +203,7 @@ public partial class GameScene : Node2D
 			_buttonSound.Play();
 			await ToSignal(_buttonSound, nameof(_buttonSound.Finished).ToLowerInvariant());
 
+			await Fader.Instance.OutIn();
 			GetTree().ChangeSceneToPacked(_backScene);
 		}
 		catch (Exception ex)

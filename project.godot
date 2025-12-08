@@ -20,6 +20,10 @@ config/windows_native_icon="res://resources/juan_medina.ico"
 
 buses/default_bus_layout="uid://b0hwjuebk0oqa"
 
+[autoload]
+
+Fader="*res://src/globals/fader.tscn"
+
 [debug]
 
 gdscript/warnings/untyped_declaration=1

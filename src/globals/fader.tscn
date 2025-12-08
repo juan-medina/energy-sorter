@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgvpu8hdw1uq3"]
+
+[ext_resource type="Script" uid="uid://coqcmco62cr5d" path="res://src/globals/Fader.cs" id="1_c2hkx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jf6yx"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="Fader" type="Control"]
+visible = false
+top_level = true
+z_index = 999
+z_as_relative = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_c2hkx")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jf6yx")
