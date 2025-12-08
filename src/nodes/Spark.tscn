@@ -1,7 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://coq71vmti6p3b"]
+[gd_scene load_steps=16 format=3 uid="uid://coq71vmti6p3b"]
 
 [ext_resource type="Texture2D" uid="uid://ylbngru7mt3b" path="res://resources/spark.png" id="1_ghg8w"]
 [ext_resource type="Script" uid="uid://84slnn4c62ii" path="res://src/nodes/Spark.cs" id="2_ypt56"]
+[ext_resource type="AudioStream" uid="uid://cjie2wkvr8vty" path="res://resources/zap.wav" id="3_8a6t5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uoh11"]
 atlas = ExtResource("1_ghg8w")
@@ -92,3 +93,7 @@ animations = [{
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_l0vmj")
 script = ExtResource("2_ypt56")
+
+[node name="Zap" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_8a6t5")
+bus = &"SFX"

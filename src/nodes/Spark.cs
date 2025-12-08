@@ -9,6 +9,7 @@ public partial class Spark : AnimatedSprite2D
 {
 	private const int Velocity = 250;
 	private const float RotationSpeed = 2.5f;
+	private AudioStreamPlayer2D _zapSound;
 
 	private Vector2I _destination;
 
@@ -25,6 +26,8 @@ public partial class Spark : AnimatedSprite2D
 	public override void _Ready()
 	{
 		Play();
+		_zapSound = GetNode<AudioStreamPlayer2D>("Zap");
+		_zapSound.Play();
 	}
 
 	public override void _Process(double delta)
