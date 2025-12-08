@@ -29,6 +29,7 @@ public partial class BatteryNode : Area2D
 		new(31f / 255f, 119f / 255f, 180f / 255f), // #1F77B4 blue
 	];
 
+
 	private Battery _battery;
 	private readonly List<Sprite2D> _energySprites = [];
 	private Sprite2D _bodySprite;
@@ -157,5 +158,13 @@ public partial class BatteryNode : Area2D
 
 		UpdateVisuals();
 		other.UpdateVisuals();
+	}
+
+	public Color TopColor()
+	{
+		var top = _battery.GetTopEnergy();
+		if (top.Length == 0) return Colors.White;
+		Debug.Assert(top[0] >= 1 && top[0] <= EnergyColors.Length, "Top Color: Energy type is out of range");
+		return EnergyColors[top[0] - 1];
 	}
 }

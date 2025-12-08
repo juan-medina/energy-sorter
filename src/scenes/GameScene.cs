@@ -34,6 +34,8 @@ public partial class GameScene : Node2D
 	private readonly List<string> _levelsImports = [];
 	private int _currentLevelNumber = 1;
 
+	private PackedScene _sparkNode;
+
 	public override void _Ready()
 	{
 		_messageLabel = GetNode<Label>("UI/LayoutControl/MessageLabel");
@@ -46,6 +48,8 @@ public partial class GameScene : Node2D
 		Debug.Assert(_backScene != null, "Back scene could not be loaded in GameScene");
 
 		_buttonSound = GetNode<AudioStreamPlayer2D>("Button");
+
+		_sparkNode = ResourceLoader.Load<PackedScene>("res://src/nodes/Spark.tscn");
 
 		for (var i = 0; i < MaxBatteries; i++)
 		{
@@ -133,11 +137,22 @@ public partial class GameScene : Node2D
 			}
 
 			if (!batteryNode.CanGetEnergyFrom(_selectedBattery)) return;
+			ShootSpark(_selectedBattery, batteryNode);
 			batteryNode.TransferEnergyFrom(_selectedBattery);
 			_selectedBattery.Deselect();
 			_selectedBattery = null;
 			CheckEndCondition();
 		}
+	}
+
+	private void ShootSpark(BatteryNode from, BatteryNode to)
+	{
+		var spark = _sparkNode.Instantiate<Spark>();
+		spark.Origin = new Vector2I((int)from.Position.X, (int)from.Position.Y);
+		spark.Destination = new Vector2I((int)to.Position.X, (int)to.Position.Y);
+		spark.Modulate = from.TopColor();
+
+		AddChild(spark);
 	}
 
 	private void CheckEndCondition()

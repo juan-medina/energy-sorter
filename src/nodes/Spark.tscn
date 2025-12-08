@@ -1,0 +1,94 @@
+[gd_scene load_steps=15 format=3 uid="uid://coq71vmti6p3b"]
+
+[ext_resource type="Texture2D" uid="uid://ylbngru7mt3b" path="res://resources/spark.png" id="1_ghg8w"]
+[ext_resource type="Script" uid="uid://84slnn4c62ii" path="res://src/nodes/Spark.cs" id="2_ypt56"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uoh11"]
+atlas = ExtResource("1_ghg8w")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1g68a"]
+atlas = ExtResource("1_ghg8w")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yo2gc"]
+atlas = ExtResource("1_ghg8w")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hijc0"]
+atlas = ExtResource("1_ghg8w")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xc35o"]
+atlas = ExtResource("1_ghg8w")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ojns"]
+atlas = ExtResource("1_ghg8w")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ypt56"]
+atlas = ExtResource("1_ghg8w")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8a6t5"]
+atlas = ExtResource("1_ghg8w")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_phksg"]
+atlas = ExtResource("1_ghg8w")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5vn34"]
+atlas = ExtResource("1_ghg8w")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_377tg"]
+atlas = ExtResource("1_ghg8w")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l0vmj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uoh11")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1g68a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yo2gc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hijc0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xc35o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ojns")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ypt56")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8a6t5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_phksg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5vn34")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_377tg")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Spark" type="AnimatedSprite2D"]
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_l0vmj")
+script = ExtResource("2_ypt56")
