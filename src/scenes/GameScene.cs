@@ -147,13 +147,26 @@ public partial class GameScene : Node2D
 
 	private void ShootSpark(BatteryNode from, BatteryNode to)
 	{
-		var spark = _sparkNode.Instantiate<Spark>();
-		spark.Origin = new Vector2I((int)from.Position.X, (int)from.Position.Y);
-		spark.Destination = new Vector2I((int)to.Position.X, (int)to.Position.Y);
-		spark.Modulate = from.TopColor();
+		const int sparksCount = 5;
+		const float radius = 12f;
 
-		AddChild(spark);
+		var targetPos = new Vector2(to.Position.X, to.Position.Y);
+
+		for (var i = 0; i < sparksCount; i++)
+		{
+			var angle = (float)(i * (Math.PI * 2) / sparksCount);
+			var offset = new Vector2((float)Math.Cos(angle) * radius, (float)Math.Sin(angle) * radius);
+			var originPos = new Vector2(from.Position.X, from.Position.Y) + offset;
+
+			var spark = _sparkNode.Instantiate<Spark>();
+			spark.Origin = new Vector2I((int)originPos.X, (int)originPos.Y);
+			spark.Destination = new Vector2I((int)targetPos.X, (int)targetPos.Y);
+			spark.Modulate = from.TopColor();
+
+			AddChild(spark);
+		}
 	}
+
 
 	private void CheckEndCondition()
 	{
