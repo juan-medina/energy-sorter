@@ -189,7 +189,7 @@ public partial class GameScene : Node2D
 			}
 			else
 			{
-				_messageLabel.Text = "All energy is sorted! You win!";
+				_messageLabel.Text = "All energy is sorted, level completed!";
 				CountdownToNext();
 			}
 		}
