@@ -210,6 +210,7 @@ public partial class GameScene : Node2D
 			_buttonSound.Play();
 
 			await ToSignal(_buttonSound, nameof(_buttonSound.Finished).ToLowerInvariant());
+			_nextButton.Hide();
 
 			await Fader.Instance.OutIn();
 
