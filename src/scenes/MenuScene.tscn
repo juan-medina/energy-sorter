@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bmf3naf326tji"]
+[gd_scene load_steps=5 format=3 uid="uid://bmf3naf326tji"]
 
 [ext_resource type="Script" uid="uid://d1igm1g5lvn2c" path="res://src/scenes/MenuScene.cs" id="1_dpxdt"]
 [ext_resource type="AudioStream" uid="uid://cnuiluilpavbv" path="res://resources/menu.ogg" id="2_3f8rj"]
+[ext_resource type="PackedScene" uid="uid://bvsquywt5egu" path="res://src/scenes/MainMenu.tscn" id="2_jn2af"]
 [ext_resource type="AudioStream" uid="uid://byoqh488on0w6" path="res://resources/button.wav" id="3_weykh"]
 
 [node name="MenuScene" type="Node2D"]
@@ -19,36 +20,17 @@ grow_vertical = 2
 
 [node name="TitleLabel" type="Label" parent="UI/LayoutControl"]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
 offset_left = -117.0
-offset_top = -88.5
 offset_right = 117.0
-offset_bottom = -51.5
+offset_bottom = 37.0
 grow_horizontal = 2
-grow_vertical = 2
 theme_override_font_sizes/font_size = 30
 text = "Energy Sorter"
 
-[node name="PlayButton" type="Button" parent="UI/LayoutControl"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -38.125
-offset_top = -17.625
-offset_right = 38.125
-offset_bottom = 17.625
-grow_horizontal = 2
-grow_vertical = 2
-focus_behavior_recursive = 1
-theme_override_font_sizes/font_size = 20
-text = "Play!"
+[node name="MainMenu" parent="UI" instance=ExtResource("2_jn2af")]
 
 [node name="Menu" type="AudioStreamPlayer2D" parent="."]
 position = Vector2(505, 227)
@@ -61,5 +43,3 @@ parameters/looping = true
 position = Vector2(248, 511)
 stream = ExtResource("3_weykh")
 bus = &"SFX"
-
-[connection signal="button_up" from="UI/LayoutControl/PlayButton" to="." method="OnPlayButtonUp"]
