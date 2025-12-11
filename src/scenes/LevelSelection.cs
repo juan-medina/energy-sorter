@@ -6,7 +6,7 @@ using Godot;
 
 namespace EnergySorter.scenes;
 
-public partial class MainMenu : Control
+public partial class LevelSelection : Control
 {
 	private MenuScene _menuScene;
 
@@ -21,8 +21,13 @@ public partial class MainMenu : Control
 		_menuScene = GetParent().GetParent().GetParent<MenuScene>();
 	}
 
-	private void OnPlayButtonUp()
+	private void OnBackButtonUp()
 	{
-		_menuScene.GotoLevelSelection();
+		_menuScene.BackToMainMenu();
+	}
+
+	private void OnGoButtonUp()
+	{
+		_menuScene.GoToGame();
 	}
 }
