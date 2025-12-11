@@ -39,8 +39,7 @@ window/size/viewport_width=640
 window/size/viewport_height=360
 window/size/window_width_override=1920
 window/size/window_height_override=1080
-window/stretch/mode="canvas_items"
-window/stretch/aspect="keep_height"
+window/stretch/mode="viewport"
 window/stretch/scale_mode="integer"
 
 [dotnet]
@@ -55,7 +54,6 @@ theme/custom_font="uid://cnwxfr0xumro1"
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
 anti_aliasing/screen_space_roughness_limiter/enabled=false
 environment/defaults/default_clear_color=Color(0.078431375, 0.19215687, 0.23137255, 1)
