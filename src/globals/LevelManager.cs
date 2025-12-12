@@ -11,19 +11,21 @@ namespace EnergySorter.globals;
 public partial class LevelManager : Node
 {
 	private const string LevelsPath = "res://levels/levels.txt";
+	private const string SaveFile = "user://save.cfg";
 
 	public static LevelManager Instance { get; private set; }
 
-	private List<string> Levels { get; set; } = new();
+	private List<string> Levels { get; } = [];
 	public int SelectedLevel { get; set; } = 1;
 
 	public int TotalLevels => Levels.Count;
 	public bool IsInitialized { get; private set; }
 
+
 	public override void _Ready()
 	{
 		Instance = this;
-		LoadLevels();
+		Load();
 	}
 
 	private void LoadLevels()
@@ -72,6 +74,38 @@ public partial class LevelManager : Node
 	public void NextLevel()
 	{
 		if (SelectedLevel < TotalLevels) SelectedLevel++;
+
+		Save();
+	}
+
+	private void Load()
+	{
+		LoadLevels();
+
+		var config = new ConfigFile();
+		var err = config.Load(SaveFile);
+		if (err != Error.Ok && err != Error.FileNotFound)
+		{
+			GD.PushError($"NextLevel: failed to load max level from {SaveFile}, error: {err}");
+			return;
+		}
+
+		SelectedLevel = config.GetValue("levels", "max-level", 1).AsInt32();
+
+		if (SelectedLevel >= 1 && SelectedLevel <= TotalLevels) return;
+		GD.PushError($"Load: invalid saved level {SelectedLevel}, resetting to 1");
+		SelectedLevel = 1;
+	}
+
+	private void Save()
+	{
+		var config = new ConfigFile();
+		config.SetValue("levels", "max-level", SelectedLevel);
+		var err = config.Save(SaveFile);
+		if (err != Error.Ok)
+		{
+			GD.PushError($"NextLevel: failed to save max level to {SaveFile}, error: {err}");
+		}
 	}
 
 	public bool IsLastLevel() => SelectedLevel >= TotalLevels;

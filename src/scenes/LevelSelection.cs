@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using EnergySorter.globals;
 using Godot;
 
 namespace EnergySorter.scenes;
@@ -15,6 +16,9 @@ public partial class LevelSelection : Control
 	private const int LevelButtonsCount = 10;
 
 	private readonly List<Button> _levelButtons = [];
+	private readonly List<CheckButton> _decadeButtons = [];
+
+	private LevelManager _levelManager;
 
 	public override void _Ready()
 	{
@@ -32,6 +36,7 @@ public partial class LevelSelection : Control
 			Debug.Assert(checkButton != null, $" decade buttons {decade} is not found");
 			var decadeNumber = (decade - 1) * 10 + 1;
 			checkButton.ButtonUp += () => OnDecadesButtonUp(decadeNumber);
+			_decadeButtons.Add(checkButton);
 		}
 
 		for (var level = 1; level <= LevelButtonsCount; level++)
@@ -42,6 +47,13 @@ public partial class LevelSelection : Control
 			button.ButtonUp += () => OnLevelButtonUp(levelNumber);
 			_levelButtons.Add(button);
 		}
+
+		_levelManager = LevelManager.Instance;
+		Debug.Assert(_levelManager != null, "LevelManager instance is null in MenuScene");
+
+		var selectedDecade = (_levelManager.SelectedLevel - 1) / 10;
+		_decadeButtons[selectedDecade].SetPressed(true);
+		OnDecadesButtonUp(selectedDecade * 10 + 1);
 	}
 
 	private void OnBackButtonUp()
@@ -57,8 +69,19 @@ public partial class LevelSelection : Control
 	private void OnDecadesButtonUp(int from)
 	{
 		_menuScene.ButtonSound();
-		for (var button = 0; button < LevelButtonsCount; button++) _levelButtons[button].Text = $"{from + button}";
+		for (var button = 0; button < LevelButtonsCount; button++)
+		{
+			var level = from + button;
+			var buttonText = level == _levelManager.SelectedLevel ? $">{from + button}<" : $"{from + button}";
+			var levelButton = _levelButtons[button];
+			levelButton.Text = buttonText;
+			levelButton.Disabled = level > _levelManager.SelectedLevel;
+		}
 	}
 
-	private void OnLevelButtonUp(int level) => _menuScene.GoToGame(_levelButtons[level - 1].Text.ToInt());
+	private void OnLevelButtonUp(int button)
+	{
+		_levelManager.SelectedLevel = _levelButtons[button - 1].Text.ToInt();
+		_menuScene.GoToGame();
+	}
 }
