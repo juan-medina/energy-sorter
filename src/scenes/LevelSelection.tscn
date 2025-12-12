@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://pv2o1j8r7pxq"]
+[gd_scene load_steps=3 format=3 uid="uid://pv2o1j8r7pxq"]
 
 [ext_resource type="Script" uid="uid://dtva52iyub4dj" path="res://src/scenes/LevelSelection.cs" id="1_p1606"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_p1606"]
 
 [node name="LevelSelection" type="Control"]
 layout_mode = 3
@@ -165,30 +167,42 @@ columns = 4
 [node name="01" type="CheckButton" parent="Decades"]
 layout_mode = 2
 button_pressed = true
+button_group = SubResource("ButtonGroup_p1606")
 text = "01-10"
 
 [node name="02" type="CheckButton" parent="Decades"]
 layout_mode = 2
+button_group = SubResource("ButtonGroup_p1606")
 text = "11-20"
 
 [node name="03" type="CheckButton" parent="Decades"]
 layout_mode = 2
+button_group = SubResource("ButtonGroup_p1606")
 text = "21-30"
 
 [node name="04" type="CheckButton" parent="Decades"]
 layout_mode = 2
+button_group = SubResource("ButtonGroup_p1606")
 text = "31-40"
 
 [node name="05" type="CheckButton" parent="Decades"]
 layout_mode = 2
-text = "51-60"
+button_group = SubResource("ButtonGroup_p1606")
+text = "41-50"
 
 [node name="06" type="CheckButton" parent="Decades"]
 layout_mode = 2
-text = "61-70"
+button_group = SubResource("ButtonGroup_p1606")
+text = "51-60"
 
 [node name="07" type="CheckButton" parent="Decades"]
 layout_mode = 2
+button_group = SubResource("ButtonGroup_p1606")
+text = "61-70"
+
+[node name="08" type="CheckButton" parent="Decades"]
+layout_mode = 2
+button_group = SubResource("ButtonGroup_p1606")
 text = "71-80"
 
 [connection signal="button_up" from="BottomButtons/BackButton" to="." method="OnBackButtonUp"]

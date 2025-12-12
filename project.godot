@@ -23,6 +23,7 @@ buses/default_bus_layout="uid://b0hwjuebk0oqa"
 [autoload]
 
 Fader="*res://src/globals/fader.tscn"
+LevelManager="*res://src/globals/LevelManager.cs"
 
 [debug]
 

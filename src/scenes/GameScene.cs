@@ -14,7 +14,6 @@ namespace EnergySorter.scenes;
 
 public partial class GameScene : Node2D
 {
-	private const string LevelsPath = "res://levels/levels.txt";
 	private const int MaxBatteries = 12;
 
 	private Puzzle _puzzle;
@@ -31,13 +30,12 @@ public partial class GameScene : Node2D
 
 	private AudioStreamPlayer2D _buttonSound;
 
-	private readonly List<string> _levelsImports = [];
-	private int _currentLevelNumber = 1;
-
 	private PackedScene _sparkNode;
 
 	private int _lastSecondToNextRounded = -1;
 	private double _lastSecondToNext = -1;
+
+	private LevelManager _levelManager;
 
 	public override void _Ready()
 	{
@@ -61,39 +59,18 @@ public partial class GameScene : Node2D
 			batteryNode.OnClicked += OnBatteryClicked;
 		}
 
-		ReadLevels();
-		LoadLevel(_currentLevelNumber);
+		_levelManager = LevelManager.Instance;
+		Debug.Assert(_levelManager != null, "LevelManager instance is null in GameScene");
+		LoadLevel();
 	}
 
-	private void ReadLevels()
+	private void LoadLevel()
 	{
-		if (!FileAccess.FileExists(LevelsPath))
-		{
-			Debug.WriteLine($"Levels file not found at path: {LevelsPath}");
-			return;
-		}
-
-		using var file = FileAccess.Open(LevelsPath, FileAccess.ModeFlags.Read);
-		var stringLevels = file.GetAsText();
-		var levels = stringLevels.Split('\n');
-		foreach (var level in levels)
-		{
-			var trimmedLevel = level.Trim();
-			if (trimmedLevel.Length > 0) _levelsImports.Add(trimmedLevel);
-		}
-
-		Debug.Assert(_levelsImports.Count > 0, "No levels were loaded from the levels file.");
-		Debug.WriteLine("Total Levels Loaded: " + _levelsImports.Count);
-	}
-
-	private void LoadLevel(int number)
-	{
-		Debug.Assert(number > 0 && number <= _levelsImports.Count, "Level number out of range.");
-		var levelData = _levelsImports[number - 1];
-		_puzzle = Puzzle.Import(levelData);
+		Debug.Assert(_levelManager.IsInitialized, "LevelManager not ready.");
+		_puzzle = Puzzle.Import(_levelManager.GetCurrentLevelData());
 		_savedPuzzle = _puzzle.Clone();
 
-		_levelLabel.Text = $"Level: {number} / {_levelsImports.Count}";
+		_levelLabel.Text = $"Level: {_levelManager.SelectedLevel} / {_levelManager.TotalLevels}";
 		_nextButton.Hide();
 		_resetButton.Show();
 
@@ -182,7 +159,7 @@ public partial class GameScene : Node2D
 		{
 			_resetButton.Hide();
 
-			if (_currentLevelNumber == _levelsImports.Count)
+			if (_levelManager.IsLastLevel())
 			{
 				_messageLabel.Text = "Congratulations! You've completed all levels!";
 				_nextButton.Hide();
@@ -219,8 +196,8 @@ public partial class GameScene : Node2D
 			await Fader.Instance.OutIn();
 
 			_messageLabel.Text = string.Empty;
-			_currentLevelNumber++;
-			LoadLevel(_currentLevelNumber);
+			_levelManager.NextLevel();
+			LoadLevel();
 			EnableAllBatteries();
 		}
 		catch (Exception ex)
