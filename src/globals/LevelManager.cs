@@ -24,15 +24,21 @@ public partial class LevelManager : Node
 		get => _currentLevel;
 		set
 		{
+			var previousLevel = _currentLevel;
 			_currentLevel = Math.Clamp(value, 1, TotalLevels);
-			if (_currentLevel > UnlockedLevel) UnlockedLevel = _currentLevel;
+			if (_currentLevel > UnlockedLevel)
+			{
+				UnlockedLevel = _currentLevel;
+				Save();
+			}
+			else if (previousLevel != _currentLevel) Save();
 		}
 	}
 
 	public int UnlockedLevel
 	{
 		get => _unlockedLevel;
-		set => _unlockedLevel = Math.Clamp(value, 1, TotalLevels);
+		private set => _unlockedLevel = Math.Clamp(value, 1, TotalLevels);
 	}
 
 	public int TotalLevels => Levels.Count;
@@ -90,8 +96,6 @@ public partial class LevelManager : Node
 	public void NextLevel()
 	{
 		if (CurrentLevel < TotalLevels) CurrentLevel++;
-
-		Save();
 	}
 
 	private void Load()
