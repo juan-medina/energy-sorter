@@ -16,55 +16,130 @@ public partial class GeneratorScene : Node2D
 	{
 		public string Export;
 		public int Steps;
-		public int FullBatteries;
-		public int EmptyBatteries;
+		public int Batteries;
+		public int Energy;
 	}
 
 	private readonly List<LevelData> _levels = [];
 
 	private void OnGeneratorButtonUp()
 	{
-		GenerateLevels(150, 2, 1);
-		GenerateLevels(150, 3, 2);
-		GenerateLevels(150, 4, 2);
-		GenerateLevels(150, 5, 2);
-		GenerateLevels(150, 6, 1);
-		GenerateLevels(150, 7, 2);
-		GenerateLevels(150, 8, 2);
-		GenerateLevels(150, 9, 2);
-		GenerateLevels(150, 10, 2);
+		GenerateLevels(1600, 3, 2);
+		GenerateLevels(1600, 4, 2);
+
+		GenerateLevels(1600, 4, 3);
+		GenerateLevels(1600, 5, 3);
+
+		GenerateLevels(1600, 5, 4);
+		GenerateLevels(1600, 6, 4);
+
+		GenerateLevels(1600, 6, 5);
+		GenerateLevels(1600, 7, 5);
+
+		GenerateLevels(750, 7, 6);
+		GenerateLevels(750, 8, 6);
+
+		GenerateLevels(250, 8, 7);
+		GenerateLevels(250, 9, 7);
+
+		GenerateLevels(150, 10, 8);
+
+		GenerateLevelWithPairs(50, 12, 8);
 
 		for (var i = 0; i < _levels.Count; i++)
 		{
 			var level = _levels[i];
 			Console.WriteLine(
-				$"Level {i + 1:00}: {level.Export} Steps: {level.Steps} Full: {level.FullBatteries} Empty: {level.EmptyBatteries}");
+				$"Level {i + 1:00}: {level.Export} Steps: {level.Steps} Batteries: {level.Batteries} Energy: {level.Energy}");
 		}
 
-		foreach (var level in _levels) Console.WriteLine(level.Export);
+		foreach (var level in _levels)
+		{
+			Console.WriteLine(level.Export + "-" + level.Steps);
+		}
 	}
 
-	private void GenerateLevels(int iterations, int fullBatteries, int emptyBatteries)
+	private void GenerateLevelWithPairs(int iterations, int batteries, int energies)
+	{
+		var generatedLevels = new HashSet<string>();
+
+		List<LevelData> stepLevel = [];
+
+		var halfBatteries = batteries / 2;
+		var halfEnergies = energies / 2;
+
+		for (var i = 1; i <= iterations; i++)
+		{
+			Debug.WriteLine($"Batteries: {batteries} Energies: {energies} - Generated level {i}/{iterations}");
+
+			var puzzle1 = new Puzzle(halfBatteries, halfEnergies);
+			if (puzzle1.IsSolved || puzzle1.ContainsClosedBattery)
+			{
+				i--;
+				continue;
+			}
+
+			var puzzle2 = new Puzzle(halfBatteries, halfEnergies);
+			if (puzzle2.IsSolved || puzzle2.ContainsClosedBattery)
+			{
+				i--;
+				continue;
+			}
+
+			var steps1 = puzzle1.Solve();
+			var steps2 = puzzle2.Solve();
+
+			if (steps1 < 0 || steps2 < 0)
+			{
+				i--;
+				continue;
+			}
+
+			puzzle2.ShiftEnergyType(halfEnergies);
+
+			var puzzle = puzzle1 + puzzle2;
+			puzzle.Sort();
+			var export = puzzle.Export();
+
+
+			if (!generatedLevels.Add(export)) continue;
+
+			var level = new LevelData
+			{
+				Export = export,
+				Steps = steps1 + steps2,
+				Batteries = batteries,
+				Energy = energies,
+			};
+			stepLevel.Add(level);
+		}
+
+		stepLevel.Sort((a, b) => a.Steps.CompareTo(b.Steps));
+		foreach (var level in stepLevel) _levels.Add(level);
+	}
+
+	private void GenerateLevels(int iterations, int batteries, int energies)
 	{
 		List<LevelData> stepLevel = [];
 		for (var i = 1; i <= iterations; i++)
 		{
-			Debug.WriteLine($"Full: {fullBatteries} Empty: {emptyBatteries} - Generated level {i}/{iterations}");
-			var puzzle = new Puzzle(fullBatteries, emptyBatteries);
+			Debug.WriteLine($"Batteries: {batteries} Energies: {energies} - Generated level {i}/{iterations}");
+			var puzzle = new Puzzle(batteries, energies);
 			if (puzzle.IsSolved || puzzle.ContainsClosedBattery)
 			{
 				i--;
 				continue;
 			}
 
+			puzzle.Sort();
 			var export = puzzle.Export();
 			var steps = puzzle.Solve();
 			var level = new LevelData
 			{
 				Export = export,
 				Steps = steps,
-				FullBatteries = fullBatteries,
-				EmptyBatteries = emptyBatteries,
+				Batteries = batteries,
+				Energy = energies,
 			};
 			stepLevel.Add(level);
 		}

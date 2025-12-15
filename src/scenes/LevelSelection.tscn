@@ -156,54 +156,74 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -202.0
-offset_top = -155.0
-offset_right = 202.0
-offset_bottom = -91.0
+offset_left = -258.0
+offset_top = -149.0
+offset_right = 258.0
+offset_bottom = -80.0
 grow_horizontal = 2
 grow_vertical = 0
-columns = 4
+columns = 5
 
 [node name="01" type="CheckButton" parent="Decades"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 0
 button_pressed = true
 button_group = SubResource("ButtonGroup_p1606")
 text = "01-10"
 
 [node name="02" type="CheckButton" parent="Decades"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 0
 button_group = SubResource("ButtonGroup_p1606")
 text = "11-20"
 
 [node name="03" type="CheckButton" parent="Decades"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 0
 button_group = SubResource("ButtonGroup_p1606")
 text = "21-30"
 
 [node name="04" type="CheckButton" parent="Decades"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 0
 button_group = SubResource("ButtonGroup_p1606")
 text = "31-40"
 
 [node name="05" type="CheckButton" parent="Decades"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 0
 button_group = SubResource("ButtonGroup_p1606")
 text = "41-50"
 
 [node name="06" type="CheckButton" parent="Decades"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 0
 button_group = SubResource("ButtonGroup_p1606")
 text = "51-60"
 
 [node name="07" type="CheckButton" parent="Decades"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 0
 button_group = SubResource("ButtonGroup_p1606")
 text = "61-70"
 
 [node name="08" type="CheckButton" parent="Decades"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 0
 button_group = SubResource("ButtonGroup_p1606")
 text = "71-80"
+
+[node name="09" type="CheckButton" parent="Decades"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 0
+button_group = SubResource("ButtonGroup_p1606")
+text = "81-90"
+
+[node name="10" type="CheckButton" parent="Decades"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 0
+button_group = SubResource("ButtonGroup_p1606")
+text = "91-100"
 
 [connection signal="button_up" from="BottomButtons/BackButton" to="." method="OnBackButtonUp"]
 [connection signal="button_up" from="BottomButtons/GoButton" to="." method="OnGoButtonUp"]

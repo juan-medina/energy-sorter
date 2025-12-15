@@ -3,12 +3,13 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace EnergySorter.model;
 
 public class Battery
 {
-	public const int MaxEnergyTypes = 10;
+	private const int MaxEnergyTypes = 10;
 
 	private enum State
 	{
@@ -119,4 +120,13 @@ public class Battery
 			other.RemoveLastEnergy();
 		}
 	}
+
+	public void ShiftEnergyType(int offset)
+	{
+		for (var i = 0; i < _energies.Count; i++)
+			if (_energies[i] != 0)
+				_energies[i] += offset;
+	}
+
+	public int Value() => _energies.Select((t, i) => t * i).Sum();
 }

@@ -12,7 +12,7 @@ public partial class LevelSelection : Control
 {
 	private MenuScene _menuScene;
 
-	private const int DecadesButtonsCount = 8;
+	private const int DecadesButtonsCount = 10;
 	private const int LevelButtonsCount = 10;
 
 	private readonly List<Button> _levelButtons = [];

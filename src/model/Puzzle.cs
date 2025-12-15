@@ -19,48 +19,38 @@ public class Puzzle
 	{
 	}
 
-	public Puzzle(int fullBatteries, int emptyBatteries)
+	// Constructs a puzzle with a specified number of battery slots and a specified number of energy types.
+	// For each energy type (1 -> energyTypes) this constructor will place Battery.MaxEnergy units of that type
+	// randomly into the available batteries until every unit for every type has been placed.
+	public Puzzle(int batteriesCount, int energyTypes)
 	{
-		// Summary: It constructs a puzzle by creating a fixed set of battery slots, reserving some as empty,
-		// picking a few distinct colors, and then randomly dropping a fixed number of energy units
-		// of each chosen color into the non-empty slots until every chosen color has placed its full quota.
-		//
-		// The objective is to create random puzzles with a mix of full and empty batteries so the player
-		// can sort the energies by color
-		Debug.Assert(fullBatteries + emptyBatteries <= MaxBatteries,
-			$"A puzzle can not have more than {MaxBatteries} batteries");
+		Debug.Assert(batteriesCount is > 0 and <= MaxBatteries,
+			$"A puzzle must have between 1 and {MaxBatteries} batteries");
 
-		var limitFullBatteries = Math.Min(fullBatteries, MaxBatteries - emptyBatteries);
+		var limitEnergyTypes = Math.Clamp(energyTypes, 1, MaxBatteries - 1);
 
-		Debug.Assert(limitFullBatteries <= Battery.MaxEnergyTypes,
-			$"A puzzle can not have more than {Battery.MaxEnergyTypes} full batteries with unique type");
+		Debug.Assert(limitEnergyTypes <= batteriesCount,
+			"The number of energy types must be at least equal to the number of batteries to ensure solvability.");
 
-		limitFullBatteries = Math.Min(limitFullBatteries, Battery.MaxEnergyTypes);
+		var totalBatteries = Math.Min(batteriesCount, MaxBatteries);
 
-		var randomEmptyBatteriesIndex = new HashSet<int>();
 		var random = new Random();
-		while (randomEmptyBatteriesIndex.Count < emptyBatteries)
-		{
-			var index = random.Next(0, limitFullBatteries + emptyBatteries);
-			randomEmptyBatteriesIndex.Add(index);
-		}
 
-
-		var totalBatteries = limitFullBatteries + emptyBatteries;
+		// create battery slots
 		for (var i = 0; i < totalBatteries; i++)
 		{
 			_batteries.Add(new Battery());
 		}
 
-		for (var type = 1; type <= limitFullBatteries; type++)
+		// For each energy type, drop Battery.MaxEnergy units randomly into batteries
+		for (var type = 1; type <= limitEnergyTypes; type++)
 		{
 			var energyToDrop = Battery.MaxEnergy;
 			while (energyToDrop > 0)
 			{
 				var batteryIndex = random.Next(0, totalBatteries);
-				if (randomEmptyBatteriesIndex.Contains(batteryIndex)) continue;
-
 				var possibleBattery = _batteries[batteryIndex];
+
 				if (possibleBattery.IsFull || possibleBattery.IsClosed) continue;
 
 				possibleBattery.AddEnergy(type);
@@ -78,6 +68,9 @@ public class Puzzle
 
 	public static Puzzle Import(string data)
 	{
+		// split the input it has battery data slash steps, we only need the battery data
+		if (data.Contains('-')) data = data.Split('-')[0];
+
 		Debug.Assert(data.Length % Battery.MaxEnergy == 0,
 			"The puzzle data length must be a multiple of the battery max energy.");
 
@@ -179,4 +172,29 @@ public class Puzzle
 	}
 
 	public bool ContainsClosedBattery => _batteries.Any(b => b.IsClosed);
+
+	public static Puzzle operator +(Puzzle left, Puzzle right)
+	{
+		Debug.Assert(left != right, "Cannot combine the same puzzle instance.");
+		Debug.Assert(left != null, "Left puzzle is null.");
+		Debug.Assert(right != null, "Right puzzle is null.");
+
+		var total = left._batteries.Count + right._batteries.Count;
+		Debug.Assert(total <= MaxBatteries, $"Resulting puzzle would have more than {MaxBatteries} batteries.");
+
+		var result = new Puzzle();
+		foreach (var b in left._batteries) result._batteries.Add(b.Clone());
+		foreach (var b in right._batteries) result._batteries.Add(b.Clone());
+		return result;
+	}
+
+	public void ShiftEnergyType(int offset)
+	{
+		foreach (var battery in _batteries)
+		{
+			battery.ShiftEnergyType(offset);
+		}
+	}
+
+	public void Sort() => _batteries.Sort((a, b) => a.Value().CompareTo(b.Value()));
 }
