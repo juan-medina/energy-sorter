@@ -54,6 +54,13 @@ public partial class LevelSelection : Control
 		var selectedDecade = (_levelManager.CurrentLevel - 1) / 10;
 		_decadeButtons[selectedDecade].SetPressed(true);
 		OnDecadesButtonUp(selectedDecade * 10 + 1);
+
+		for(var decade = 0; decade < DecadesButtonsCount; decade++)
+		{
+			var from = decade * 10 + 1;
+			_decadeButtons[decade].Disabled = _levelManager.UnlockedLevel < from;
+			_decadeButtons[decade].FocusMode = _decadeButtons[decade].Disabled ? FocusModeEnum.None : FocusModeEnum.All;
+		}
 	}
 
 	private void OnBackButtonUp()
