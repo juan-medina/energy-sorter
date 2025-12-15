@@ -81,6 +81,8 @@ public class Battery
 		for (var i = _energies.Count - 2; i >= 0; i--)
 			if (_energies[i] == lastEnergy)
 				topEnergies.Add(lastEnergy);
+			else
+				break;
 
 		return topEnergies.ToArray();
 	}
