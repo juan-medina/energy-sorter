@@ -70,7 +70,7 @@ public partial class GameScene : Node2D
 		_puzzle = Puzzle.Import(_levelManager.GetCurrentLevelData());
 		_savedPuzzle = _puzzle.Clone();
 
-		_levelLabel.Text = $"Level: {_levelManager.SelectedLevel} / {_levelManager.TotalLevels}";
+		_levelLabel.Text = $"Level: {_levelManager.CurrentLevel} / {_levelManager.TotalLevels}";
 		_nextButton.Hide();
 		_resetButton.Show();
 

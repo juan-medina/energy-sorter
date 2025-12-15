@@ -10,13 +10,30 @@ namespace EnergySorter.globals;
 
 public partial class LevelManager : Node
 {
+	private int _currentLevel = 1;
+	private int _unlockedLevel = 1;
 	private const string LevelsPath = "res://levels/levels.txt";
 	private const string SaveFile = "user://save.cfg";
 
 	public static LevelManager Instance { get; private set; }
 
 	private List<string> Levels { get; } = [];
-	public int SelectedLevel { get; set; } = 1;
+
+	public int CurrentLevel
+	{
+		get => _currentLevel;
+		set
+		{
+			_currentLevel = Math.Clamp(value, 1, TotalLevels);
+			if (_currentLevel > UnlockedLevel) UnlockedLevel = _currentLevel;
+		}
+	}
+
+	public int UnlockedLevel
+	{
+		get => _unlockedLevel;
+		set => _unlockedLevel = Math.Clamp(value, 1, TotalLevels);
+	}
 
 	public int TotalLevels => Levels.Count;
 	public bool IsInitialized { get; private set; }
@@ -52,7 +69,6 @@ public partial class LevelManager : Node
 			}
 
 			Debug.Assert(Levels.Count > 0, "No levels were loaded from the levels file.");
-			SelectedLevel = Math.Clamp(SelectedLevel, 1, Math.Max(1, TotalLevels));
 			IsInitialized = Levels.Count > 0;
 		}
 		catch (Exception ex)
@@ -62,7 +78,7 @@ public partial class LevelManager : Node
 		}
 	}
 
-	public string GetCurrentLevelData() => GetLevelData(SelectedLevel);
+	public string GetCurrentLevelData() => GetLevelData(CurrentLevel);
 
 	private string GetLevelData(int number)
 	{
@@ -73,7 +89,7 @@ public partial class LevelManager : Node
 
 	public void NextLevel()
 	{
-		if (SelectedLevel < TotalLevels) SelectedLevel++;
+		if (CurrentLevel < TotalLevels) CurrentLevel++;
 
 		Save();
 	}
@@ -90,17 +106,15 @@ public partial class LevelManager : Node
 			return;
 		}
 
-		SelectedLevel = config.GetValue("levels", "max-level", 1).AsInt32();
-
-		if (SelectedLevel >= 1 && SelectedLevel <= TotalLevels) return;
-		GD.PushError($"Load: invalid saved level {SelectedLevel}, resetting to 1");
-		SelectedLevel = 1;
+		UnlockedLevel = config.GetValue("levels", "unlocked-level", 1).AsInt32();
+		CurrentLevel = config.GetValue("levels", "current-level", 1).AsInt32();
 	}
 
 	private void Save()
 	{
 		var config = new ConfigFile();
-		config.SetValue("levels", "max-level", SelectedLevel);
+		config.SetValue("levels", "unlocked-level", UnlockedLevel);
+		config.SetValue("levels", "current-level", CurrentLevel);
 		var err = config.Save(SaveFile);
 		if (err != Error.Ok)
 		{
@@ -108,5 +122,5 @@ public partial class LevelManager : Node
 		}
 	}
 
-	public bool IsLastLevel() => SelectedLevel >= TotalLevels;
+	public bool IsLastLevel() => CurrentLevel >= TotalLevels;
 }

@@ -51,7 +51,7 @@ public partial class LevelSelection : Control
 		_levelManager = LevelManager.Instance;
 		Debug.Assert(_levelManager != null, "LevelManager instance is null in MenuScene");
 
-		var selectedDecade = (_levelManager.SelectedLevel - 1) / 10;
+		var selectedDecade = (_levelManager.CurrentLevel - 1) / 10;
 		_decadeButtons[selectedDecade].SetPressed(true);
 		OnDecadesButtonUp(selectedDecade * 10 + 1);
 	}
@@ -72,16 +72,16 @@ public partial class LevelSelection : Control
 		for (var button = 0; button < LevelButtonsCount; button++)
 		{
 			var level = from + button;
-			var buttonText = level == _levelManager.SelectedLevel ? $">{from + button}<" : $"{from + button}";
+			var buttonText = level == _levelManager.CurrentLevel ? $">{from + button}<" : $"{from + button}";
 			var levelButton = _levelButtons[button];
 			levelButton.Text = buttonText;
-			levelButton.Disabled = level > _levelManager.SelectedLevel;
+			levelButton.Disabled = level > _levelManager.UnlockedLevel;
 		}
 	}
 
 	private void OnLevelButtonUp(int button)
 	{
-		_levelManager.SelectedLevel = _levelButtons[button - 1].Text.ToInt();
+		_levelManager.CurrentLevel = _levelButtons[button - 1].Text.ToInt();
 		_menuScene.GoToGame();
 	}
 }
