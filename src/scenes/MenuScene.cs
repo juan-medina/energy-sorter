@@ -19,7 +19,7 @@ public partial class MenuScene : Node2D
 	private MainMenu _mainMenu;
 	private LevelSelection _levelSelection;
 
-
+	private LevelManager _levelManager;
 
 	public override void _Ready()
 	{
@@ -33,6 +33,9 @@ public partial class MenuScene : Node2D
 
 		_levelSelection = GetNode<LevelSelection>("UI/LayoutControl/LevelSelection");
 		Debug.Assert(_levelSelection != null, "LevelSelection could not be found in MenuScene");
+
+		_levelManager = LevelManager.Instance;
+		Debug.Assert(_levelManager != null, "LevelManager instance is null in MenuScene");
 	}
 
 	public async void GoToGame()
@@ -74,6 +77,11 @@ public partial class MenuScene : Node2D
 			_buttonSound.Play();
 			await ToSignal(_buttonSound, nameof(_buttonSound.Finished).ToLowerInvariant());
 
+			if (_levelManager.UnlockedLevel == 1)
+			{
+				GoToGame();
+				return;
+			}
 			_mainMenu.Hide();
 			_levelSelection.Show();
 		}
