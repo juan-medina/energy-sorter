@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bmf3naf326tji"]
+[gd_scene load_steps=7 format=3 uid="uid://bmf3naf326tji"]
 
 [ext_resource type="Script" uid="uid://d1igm1g5lvn2c" path="res://src/scenes/MenuScene.cs" id="1_dpxdt"]
 [ext_resource type="AudioStream" uid="uid://cnuiluilpavbv" path="res://resources/menu.ogg" id="2_3f8rj"]
-[ext_resource type="PackedScene" uid="uid://bvsquywt5egu" path="res://src/scenes/MainMenu.tscn" id="2_jn2af"]
+[ext_resource type="PackedScene" uid="uid://bvsquywt5egu" path="res://src/scenes/menu/MainMenu.tscn" id="2_jn2af"]
 [ext_resource type="AudioStream" uid="uid://byoqh488on0w6" path="res://resources/button.wav" id="3_weykh"]
-[ext_resource type="PackedScene" uid="uid://pv2o1j8r7pxq" path="res://src/scenes/LevelSelection.tscn" id="3_y16ke"]
+[ext_resource type="PackedScene" uid="uid://pv2o1j8r7pxq" path="res://src/scenes/menu/LevelMenu.tscn" id="3_y16ke"]
+[ext_resource type="PackedScene" uid="uid://c7n1odo0srd4e" path="res://src/scenes/menu/DevMenu.tscn" id="4_r81y4"]
 
 [node name="MenuScene" type="Node2D"]
 script = ExtResource("1_dpxdt")
@@ -34,7 +35,11 @@ text = "Energy Sorter"
 [node name="MainMenu" parent="UI/LayoutControl" instance=ExtResource("2_jn2af")]
 layout_mode = 1
 
-[node name="LevelSelection" parent="UI/LayoutControl" instance=ExtResource("3_y16ke")]
+[node name="LevelMenu" parent="UI/LayoutControl" instance=ExtResource("3_y16ke")]
+visible = false
+layout_mode = 1
+
+[node name="DevMenu" parent="UI/LayoutControl" instance=ExtResource("4_r81y4")]
 visible = false
 layout_mode = 1
 

@@ -16,8 +16,9 @@ public partial class MenuScene : Node2D
 
 	private AudioStreamPlayer2D _buttonSound;
 
-	private MainMenu _mainMenu;
-	private LevelSelection _levelSelection;
+	private menu.MainMenu _mainMenu;
+	private menu.LevelMenu _levelSelection;
+	private menu.DevMenu _devMenu;
 
 	private LevelManager _levelManager;
 
@@ -28,11 +29,14 @@ public partial class MenuScene : Node2D
 		_buttonSound = GetNode<AudioStreamPlayer2D>("Button");
 		Debug.Assert(_gameScene != null, "Game scene could not be loaded in MenuScene");
 
-		_mainMenu = GetNode<MainMenu>("UI/LayoutControl/MainMenu");
+		_mainMenu = GetNode<menu.MainMenu>("UI/LayoutControl/MainMenu");
 		Debug.Assert(_mainMenu != null, "MainMenu could not be found in MenuScene");
 
-		_levelSelection = GetNode<LevelSelection>("UI/LayoutControl/LevelSelection");
-		Debug.Assert(_levelSelection != null, "LevelSelection could not be found in MenuScene");
+		_levelSelection = GetNode<menu.LevelMenu>("UI/LayoutControl/LevelMenu");
+		Debug.Assert(_levelSelection != null, "LevelMenu could not be found in MenuScene");
+
+		_devMenu = GetNode<menu.DevMenu>("UI/LayoutControl/DevMenu");
+		Debug.Assert(_devMenu != null, "DevMenu could not be found in MenuScene");
 
 		_levelManager = LevelManager.Instance;
 		Debug.Assert(_levelManager != null, "LevelManager instance is null in MenuScene");
@@ -60,7 +64,7 @@ public partial class MenuScene : Node2D
 	{
 		try
 		{
-			if(_buttonSound == null) return;
+			if (_buttonSound == null) return;
 			_buttonSound.Play();
 			await ToSignal(_buttonSound, nameof(_buttonSound.Finished).ToLowerInvariant());
 		}
@@ -82,12 +86,29 @@ public partial class MenuScene : Node2D
 				GoToGame();
 				return;
 			}
+
 			_mainMenu.Hide();
 			_levelSelection.Show();
 		}
 		catch (Exception ex)
 		{
 			GD.PushError($"GotoLevelSelection error: {ex}");
+		}
+	}
+
+	public async void GotoDevMenu()
+	{
+		try
+		{
+			_buttonSound.Play();
+			await ToSignal(_buttonSound, nameof(_buttonSound.Finished).ToLowerInvariant());
+
+			_mainMenu.Hide();
+			_devMenu.Show();
+		}
+		catch (Exception ex)
+		{
+			GD.PushError($"GotoDevMenu error: {ex}");
 		}
 	}
 
@@ -99,6 +120,7 @@ public partial class MenuScene : Node2D
 			await ToSignal(_buttonSound, nameof(_buttonSound.Finished).ToLowerInvariant());
 
 			_levelSelection.Hide();
+			_devMenu.Hide();
 			_mainMenu.Show();
 		}
 		catch (Exception ex)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://pv2o1j8r7pxq"]
 
-[ext_resource type="Script" uid="uid://dtva52iyub4dj" path="res://src/scenes/LevelSelection.cs" id="1_p1606"]
+[ext_resource type="Script" uid="uid://dtva52iyub4dj" path="res://src/scenes/menu/LevelMenu.cs" id="1_p1606"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_p1606"]
 

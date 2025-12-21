@@ -4,9 +4,9 @@
 using System.Diagnostics;
 using Godot;
 
-namespace EnergySorter.scenes;
+namespace EnergySorter.scenes.menu;
 
-public partial class MainMenu : Control
+public partial class DevMenu : Control
 {
 	private MenuScene _menuScene;
 
@@ -21,8 +21,8 @@ public partial class MainMenu : Control
 		_menuScene = GetParent().GetParent().GetParent<MenuScene>();
 	}
 
-	private void OnPlayButtonUp()
+	private void OnBackButtonUp()
 	{
-		_menuScene.GotoLevelSelection();
+		_menuScene.BackToMainMenu();
 	}
 }

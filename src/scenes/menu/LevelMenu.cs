@@ -6,9 +6,9 @@ using System.Diagnostics;
 using EnergySorter.globals;
 using Godot;
 
-namespace EnergySorter.scenes;
+namespace EnergySorter.scenes.menu;
 
-public partial class LevelSelection : Control
+public partial class LevelMenu : Control
 {
 	private MenuScene _menuScene;
 
@@ -55,7 +55,7 @@ public partial class LevelSelection : Control
 		_decadeButtons[selectedDecade].SetPressed(true);
 		OnDecadesButtonUp(selectedDecade * 10 + 1);
 
-		for(var decade = 0; decade < DecadesButtonsCount; decade++)
+		for (var decade = 0; decade < DecadesButtonsCount; decade++)
 		{
 			var from = decade * 10 + 1;
 			_decadeButtons[decade].Disabled = _levelManager.UnlockedLevel < from;
