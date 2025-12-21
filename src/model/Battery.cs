@@ -128,5 +128,5 @@ public class Battery
 				_energies[i] += offset;
 	}
 
-	public int Value() => _energies.Select((t, i) => t * i).Sum();
+	public int Value() => _energies.Select((t, i) => t * i + 1).Sum();
 }

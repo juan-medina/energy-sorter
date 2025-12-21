@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using EnergySorter.model;
 using Godot;
 
@@ -24,6 +23,7 @@ public partial class GeneratorScene : Node2D
 
 	private void OnGeneratorButtonUp()
 	{
+		/*
 		GenerateLevels(1600, 3, 2);
 		GenerateLevels(1600, 4, 2);
 
@@ -43,8 +43,10 @@ public partial class GeneratorScene : Node2D
 		GenerateLevels(250, 9, 7);
 
 		GenerateLevels(150, 10, 8);
+		GenerateLevelWithPairs(50, 11, 9);
+		*/
 
-		GenerateLevelWithPairs(50, 12, 8);
+		GenerateLevelWithPairs(50, 12, 10);
 
 		for (var i = 0; i < _levels.Count; i++)
 		{
@@ -68,6 +70,9 @@ public partial class GeneratorScene : Node2D
 		var halfBatteries = batteries / 2;
 		var halfEnergies = energies / 2;
 
+		var remainingBatteries = batteries - halfBatteries;
+		var remainingEnergies = energies - halfEnergies;
+
 		for (var i = 1; i <= iterations; i++)
 		{
 			Debug.WriteLine($"Batteries: {batteries} Energies: {energies} - Generated level {i}/{iterations}");
@@ -79,7 +84,7 @@ public partial class GeneratorScene : Node2D
 				continue;
 			}
 
-			var puzzle2 = new Puzzle(halfBatteries, halfEnergies);
+			var puzzle2 = new Puzzle(remainingBatteries, remainingEnergies);
 			if (puzzle2.IsSolved || puzzle2.ContainsClosedBattery)
 			{
 				i--;
@@ -115,7 +120,7 @@ public partial class GeneratorScene : Node2D
 		}
 
 		stepLevel.Sort((a, b) => a.Steps.CompareTo(b.Steps));
-		foreach (var level in stepLevel) _levels.Add(level);
+		_levels.AddRange(stepLevel);
 	}
 
 	private void GenerateLevels(int iterations, int batteries, int energies)
@@ -145,11 +150,6 @@ public partial class GeneratorScene : Node2D
 		}
 
 		stepLevel.Sort((a, b) => a.Steps.CompareTo(b.Steps));
-		var byStep = -1;
-		foreach (var level in stepLevel.Where(level => level.Steps != byStep))
-		{
-			_levels.Add(level);
-			byStep = level.Steps;
-		}
+		_levels.AddRange(stepLevel);
 	}
 }
