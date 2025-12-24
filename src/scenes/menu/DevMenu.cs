@@ -11,6 +11,8 @@ namespace EnergySorter.scenes.menu;
 
 public partial class DevMenu : Control
 {
+	private record LevelInfo(string Export, int Steps);
+
 	private MenuScene _menuScene;
 
 	private SpinBox _batterySpinBox;
@@ -35,6 +37,7 @@ public partial class DevMenu : Control
 	private CancellationTokenSource _cts;
 
 	private readonly HashSet<string> _generatedLevels = [];
+	private readonly List<LevelInfo> _levelsInfo = [];
 
 	public override void _Ready()
 	{
@@ -103,6 +106,8 @@ public partial class DevMenu : Control
 			return;
 		}
 
+		_levelsInfo.Clear();
+		_generatedLevels.Clear();
 		_backButton.Disabled = true;
 		_batterySpinBox.Editable = false;
 		_energiesSpinBox.Editable = false;
@@ -145,6 +150,16 @@ public partial class DevMenu : Control
 		_generateButton.Disabled = false;
 		_cancelButton.Disabled = true;
 		_statusLabel.Text = "Generation complete!";
+
+		_levelsInfo.Sort((a, b) => a.Steps.CompareTo(b.Steps));
+		foreach(var info in _levelsInfo)
+		{
+			GD.Print($"{info.Export}-{info.Steps}");
+		}
+		_levelsInfo.Clear();
+		_generatedLevels.Clear();
+		_workerThread = null;
+
 	}
 
 	private void OnCancelButtonUp()
@@ -178,9 +193,9 @@ public partial class DevMenu : Control
 		_workerThread = null;
 		if (_generatedLevels.Contains(level)) return;
 
-		Debug.WriteLine($"Level {_currentLevel} generated:\n{level} steps: {steps}\n");
 		_currentLevel++;
 		_generatedLevels.Add(level);
+		_levelsInfo.Add(new LevelInfo(level, steps));
 	}
 
 
