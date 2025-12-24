@@ -24,43 +24,124 @@ grow_horizontal = 2
 text = "Dev Menu"
 horizontal_alignment = 1
 
-[node name="BottomButtons" type="Control" parent="."]
+[node name="BG" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -155.54688
+offset_top = -72.1875
+offset_right = 155.54688
+offset_bottom = 72.1875
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Layout" type="GridContainer" parent="BG"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -148.66016
+offset_top = -56.0
+offset_right = 148.66016
+offset_bottom = 56.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SpinsRow" type="GridContainer" parent="BG/Layout"]
+layout_mode = 2
+columns = 3
+
+[node name="Batteries" type="GridContainer" parent="BG/Layout/SpinsRow"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="BG/Layout/SpinsRow/Batteries"]
+layout_mode = 2
+text = "Batteries:   "
+
+[node name="Spin" type="SpinBox" parent="BG/Layout/SpinsRow/Batteries"]
+layout_mode = 2
+
+[node name="Energies" type="GridContainer" parent="BG/Layout/SpinsRow"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="BG/Layout/SpinsRow/Energies"]
+layout_mode = 2
+text = "Energies:   "
+
+[node name="Spin" type="SpinBox" parent="BG/Layout/SpinsRow/Energies"]
+layout_mode = 2
+
+[node name="Levels" type="GridContainer" parent="BG/Layout/SpinsRow"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="BG/Layout/SpinsRow/Levels"]
+layout_mode = 2
+text = "Levels:"
+
+[node name="Spin" type="SpinBox" parent="BG/Layout/SpinsRow/Levels"]
+layout_mode = 2
+
+[node name="ProgressRow" type="GridContainer" parent="BG/Layout"]
+layout_mode = 2
+
+[node name="Bar" type="ProgressBar" parent="BG/Layout/ProgressRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="StatusRow" type="GridContainer" parent="BG/Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="BG/Layout/StatusRow"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+
+[node name="ButtonRow" type="GridContainer" parent="BG/Layout"]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 2
+
+[node name="Generate" type="Button" parent="BG/Layout/ButtonRow"]
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+text = "Generate"
+
+[node name="Cancel" type="Button" parent="BG/Layout/ButtonRow"]
+layout_mode = 2
+focus_mode = 0
+disabled = true
+text = "Cancel"
+
+[node name="BackButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -125.0
-offset_top = -70.0
-offset_right = 125.0
-offset_bottom = -30.0
+offset_left = -25.5
+offset_top = -48.0
+offset_right = 25.5
+offset_bottom = -20.0
 grow_horizontal = 2
-grow_vertical = 0
-
-[node name="BackButton" type="Button" parent="BottomButtons"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -28.0
-offset_right = 51.0
 grow_vertical = 0
 focus_mode = 0
 text = "Back"
 
-[node name="GoButton" type="Button" parent="BottomButtons"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -51.0
-offset_top = -28.0
-grow_horizontal = 0
-grow_vertical = 0
-focus_mode = 0
-text = "..."
+[node name="Control" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 25.0
+offset_bottom = 5.0
 
-[connection signal="button_up" from="BottomButtons/BackButton" to="." method="OnBackButtonUp"]
+[node name="AcceptDialog" type="AcceptDialog" parent="."]
+oversampling_override = 1.0
+
+[connection signal="button_up" from="BG/Layout/ButtonRow/Generate" to="." method="OnGenerateButtonUp"]
+[connection signal="button_up" from="BG/Layout/ButtonRow/Cancel" to="." method="OnCancelButtonUp"]
+[connection signal="button_up" from="BackButton" to="." method="OnBackButtonUp"]
