@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2025 Juan Medina
 // SPDX-License-Identifier: MIT
 
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using EnergySorter.model;
@@ -32,6 +33,8 @@ public partial class DevMenu : Control
 
 	private Thread _workerThread;
 	private CancellationTokenSource _cts;
+
+	private readonly HashSet<string> _generatedLevels = [];
 
 	public override void _Ready()
 	{
@@ -172,9 +175,12 @@ public partial class DevMenu : Control
 
 	private void OnLevelCompleted(string level, int steps)
 	{
+		_workerThread = null;
+		if (_generatedLevels.Contains(level)) return;
+
 		Debug.WriteLine($"Level {_currentLevel} generated:\n{level} steps: {steps}\n");
 		_currentLevel++;
-		_workerThread = null;
+		_generatedLevels.Add(level);
 	}
 
 
