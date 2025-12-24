@@ -110,6 +110,21 @@ public class Puzzle
 		return sb.ToString();
 	}
 
+	private string Key()
+	{
+		var export = Export();
+
+		var count = export.Length / Battery.MaxEnergy;
+
+		var chunks = Enumerable.Range(0, count)
+			.Select(i => export.Substring(i * Battery.MaxEnergy, Battery.MaxEnergy));
+
+		var filtered = chunks.Where(s => !(s.All(c => c == s[0]) && s[0] != '0'));
+		var sorted = filtered.OrderBy(s => s);
+
+		return string.Concat(sorted);
+	}
+
 
 	public bool IsSolved => _batteries.All(b => b.IsEmpty || b.IsClosed);
 
@@ -118,8 +133,7 @@ public class Puzzle
 		_batteries.Where(source => !source.IsEmpty && !source.IsClosed).Any(source =>
 			_batteries.Where(target => !ReferenceEquals(target, source) && !target.IsClosed && !target.IsFull)
 				.Any(target => target.CanGetEnergyFrom(source)));
-
-
+	
 	public int Solve()
 	{
 		var best = int.MaxValue;
@@ -138,8 +152,7 @@ public class Puzzle
 		// prune if we already have a better or equal solution
 		if (depth >= best) return;
 
-		// use Export() as the canonical state key
-		var key = state.Export();
+		var key = state.Key();
 		if (visited.TryGetValue(key, out var prevDepth) && prevDepth <= depth) return;
 		visited[key] = depth;
 
