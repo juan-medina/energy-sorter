@@ -133,7 +133,7 @@ public class Puzzle
 		_batteries.Where(source => !source.IsEmpty && !source.IsClosed).Any(source =>
 			_batteries.Where(target => !ReferenceEquals(target, source) && !target.IsClosed && !target.IsFull)
 				.Any(target => target.CanGetEnergyFrom(source)));
-	
+
 	public int Solve()
 	{
 		var best = int.MaxValue;
@@ -185,29 +185,6 @@ public class Puzzle
 	}
 
 	public bool ContainsClosedBattery => _batteries.Any(b => b.IsClosed);
-
-	public static Puzzle operator +(Puzzle left, Puzzle right)
-	{
-		Debug.Assert(left != right, "Cannot combine the same puzzle instance.");
-		Debug.Assert(left != null, "Left puzzle is null.");
-		Debug.Assert(right != null, "Right puzzle is null.");
-
-		var total = left._batteries.Count + right._batteries.Count;
-		Debug.Assert(total <= MaxBatteries, $"Resulting puzzle would have more than {MaxBatteries} batteries.");
-
-		var result = new Puzzle();
-		foreach (var b in left._batteries) result._batteries.Add(b.Clone());
-		foreach (var b in right._batteries) result._batteries.Add(b.Clone());
-		return result;
-	}
-
-	public void ShiftEnergyType(int offset)
-	{
-		foreach (var battery in _batteries)
-		{
-			battery.ShiftEnergyType(offset);
-		}
-	}
 
 	public void Sort() => _batteries.Sort((a, b) => a.Value().CompareTo(b.Value()));
 }
