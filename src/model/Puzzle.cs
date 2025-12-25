@@ -134,20 +134,27 @@ public class Puzzle
 			_batteries.Where(target => !ReferenceEquals(target, source) && !target.IsClosed && !target.IsFull)
 				.Any(target => target.CanGetEnergyFrom(source)));
 
-	public int Solve()
+	public (int Moves, List<(int From, int To)> Path) Solve()
 	{
 		var best = int.MaxValue;
 		var visited = new Dictionary<string, int>();
 
 		// start from a clone of the current puzzle
 		var start = Clone();
-		if (start.IsSolved) return 0;
+		if (start.IsSolved) return (0, []);
 
-		SolveRecursive(start, 0, ref best, visited);
-		return best == int.MaxValue ? -1 : best;
+		var bestPath = new List<(int From, int To)>();
+		SolveRecursive(start, 0, ref best, visited, [], ref bestPath);
+		return best == int.MaxValue ? (-1, new List<(int From, int To)>()) : (best, bestPath);
 	}
 
-	private static void SolveRecursive(Puzzle state, int depth, ref int best, Dictionary<string, int> visited)
+	private static void SolveRecursive(
+		Puzzle state,
+		int depth,
+		ref int best,
+		Dictionary<string, int> visited,
+		List<(int From, int To)> currentMoves,
+		ref List<(int From, int To)> bestMoves)
 	{
 		// prune if we already have a better or equal solution
 		if (depth >= best) return;
@@ -158,7 +165,10 @@ public class Puzzle
 
 		if (state.IsSolved)
 		{
-			if (depth < best) best = depth;
+			if (depth >= best) return;
+			best = depth;
+			bestMoves = new List<(int From, int To)>(currentMoves);
+
 			return;
 		}
 
@@ -179,7 +189,8 @@ public class Puzzle
 				var next = state.Clone();
 				next._batteries[dst].TransferEnergyFrom(next._batteries[src]);
 
-				SolveRecursive(next, depth + 1, ref best, visited);
+				var nextMoves = new List<(int From, int To)>(currentMoves) { (src + 1, dst + 1) };
+				SolveRecursive(next, depth + 1, ref best, visited, nextMoves, ref bestMoves);
 			}
 		}
 	}

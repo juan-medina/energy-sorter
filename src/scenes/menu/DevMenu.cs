@@ -231,7 +231,7 @@ public partial class DevMenu : Control
 	{
 		var levelGenerated = false;
 		var export = "";
-		var steps = 0;
+		(int Moves, List<(int From, int To)> Path) steps = (0, []);
 		while (!levelGenerated && !token.IsCancellationRequested)
 		{
 			OnIterationCompleted();
@@ -246,13 +246,13 @@ public partial class DevMenu : Control
 			steps = puzzle.Solve();
 			if (token.IsCancellationRequested) break;
 
-			if (steps <= 0) continue;
+			if (steps.Moves <= 0) continue;
 			levelGenerated = true;
 			puzzle.Sort();
 			export = puzzle.Export();
 		}
 
 		if (token.IsCancellationRequested) return;
-		OnLevelCompleted(export, steps);
+		OnLevelCompleted(export, steps.Moves);
 	}
 }

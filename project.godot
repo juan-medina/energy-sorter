@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Energy Sorter"
-config/version="0.0.1.0025"
+config/version="0.0.1.0037"
 run/main_scene="uid://bmf3naf326tji"
 config/features=PackedStringArray("4.5", "C#", "Mobile")
 config/icon="uid://dsjtlvj8bhuuy"
