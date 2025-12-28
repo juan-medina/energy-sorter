@@ -20,6 +20,7 @@ public partial class MenuScene : Node2D
 	private menu.MainMenu _mainMenu;
 	private menu.LevelMenu _levelSelection;
 	private menu.DevMenu _devMenu;
+	private menu.AboutMenu _aboutMenu;
 
 	private LevelManager _levelManager;
 
@@ -38,6 +39,9 @@ public partial class MenuScene : Node2D
 
 		_devMenu = GetNode<menu.DevMenu>("UI/LayoutControl/DevMenu");
 		Debug.Assert(_devMenu != null, "DevMenu could not be found in MenuScene");
+
+		_aboutMenu = GetNode<menu.AboutMenu>("UI/LayoutControl/AboutMenu");
+		Debug.Assert(_aboutMenu != null, "AboutMenu could not be found in MenuScene");
 
 		_levelManager = LevelManager.Instance;
 		Debug.Assert(_levelManager != null, "LevelManager instance is null in MenuScene");
@@ -127,6 +131,7 @@ public partial class MenuScene : Node2D
 
 			_levelSelection.Hide();
 			_devMenu.Hide();
+			_aboutMenu.Hide();
 			_mainMenu.Show();
 		}
 		catch (Exception ex)
@@ -148,6 +153,22 @@ public partial class MenuScene : Node2D
 		catch (Exception ex)
 		{
 			GD.PushError($"ExitGame error: {ex}");
+		}
+	}
+
+	public async void GotoAboutMenu()
+	{
+		try
+		{
+			_buttonSound.Play();
+			await ToSignal(_buttonSound, nameof(_buttonSound.Finished).ToLowerInvariant());
+
+			_mainMenu.Hide();
+			_aboutMenu.Show();
+		}
+		catch (Exception ex)
+		{
+			GD.PushError($"GotoAboutMenu error: {ex}");
 		}
 	}
 }

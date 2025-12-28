@@ -1,0 +1,129 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4jakbh1khrde"]
+
+[ext_resource type="Script" uid="uid://sj6iuf3nrvcx" path="res://src/scenes/menu/AboutMenu.cs" id="1_3ti7o"]
+
+[node name="AboutMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3ti7o")
+
+[node name="BG" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -560.0
+offset_top = -321.0
+offset_right = 560.0
+offset_bottom = 379.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="BG"]
+custom_minimum_size = Vector2(1100, 700)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="BG/ScrollContainer"]
+custom_minimum_size = Vector2(1100, 700)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.7079665, 0.7079665, 0.7079664, 1)
+theme_override_font_sizes/normal_font_size = 25
+theme_override_font_sizes/bold_font_size = 25
+theme_override_font_sizes/bold_italics_font_size = 25
+theme_override_font_sizes/italics_font_size = 25
+theme_override_font_sizes/mono_font_size = 25
+bbcode_enabled = true
+text = "[b][color=#ffffff]Energy Sorter[/color][/b]
+[color=#cccccc]A minimalist puzzle game about organizing colored energy units.[/color]
+
+[b][u]Design & Development[/u][/b]
+By [url=https://juan-medina.com]Juan Medina[/url]  
+© 2025 Juan Medina  
+Full source code available at:  
+[url=https://github.com/juan-medina/energy-sorter]https://github.com/juan-medina/energy-sorter[/url]
+
+[b][u]Engine[/u][/b]
+Built with [url=https://godotengine.org]Godot Engine 4.5[/url]  
+License: MIT
+
+[b][u]Font[/u][/b]
+Pixeloid by GGBotNet  
+License: SIL Open Font License (OFL)  
+[url=https://www.fontspace.com/ggbotnet]https://www.fontspace.com/ggbotnet[/url]
+
+[b][u]Music[/u][/b]
+By Abstraction  
+License: Public Domain (CC0)  
+[url=https://abstractionmusic.com]https://abstractionmusic.com[/url]
+
+[b][u]Sound Effects[/u][/b]
+By Helton Yan & Beto Bezerra  
+License: Creative Commons Attribution 4.0  
+[url=https://heltonyan.itch.io/pixelcombat]https://heltonyan.itch.io/pixelcombat[/url]
+
+[b][u]Additional Graphics[/u][/b]
+Particle Pack by Polar_34  
+License: MIT  
+[url=https://polar-34.itch.io/particles]https://polar-34.itch.io/particles[/url]
+
+[b][u]Licensing[/u][/b]
+Energy Sorter is released under the [b]MIT License[/b].  
+All third‑party assets retain their original licenses.
+"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -223.5
+offset_top = 118.0
+offset_right = 223.5
+offset_bottom = 192.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 60
+text = "Choose Level:"
+
+[node name="BottomButtons" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -175.0
+offset_top = -110.0
+offset_right = 175.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="BackButton" type="Button" parent="BottomButtons"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.5
+offset_top = -82.0
+offset_right = 80.5
+grow_horizontal = 2
+grow_vertical = 0
+focus_mode = 0
+theme_override_font_sizes/font_size = 60
+text = "Back"
+
+[connection signal="meta_clicked" from="BG/ScrollContainer/RichTextLabel" to="." method="OnRichTextLabelMetaClicked"]
+[connection signal="button_up" from="BottomButtons/BackButton" to="." method="OnBackButtonUp"]
