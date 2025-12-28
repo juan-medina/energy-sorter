@@ -41,5 +41,16 @@ focus_behavior_recursive = 1
 theme_override_font_sizes/font_size = 60
 text = "Dev"
 
+[node name="DevSeparation2" type="Control" parent="ButtonContainer"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+
+[node name="ExitButton" type="Button" parent="ButtonContainer"]
+layout_mode = 2
+focus_behavior_recursive = 1
+theme_override_font_sizes/font_size = 60
+text = "Exit"
+
 [connection signal="button_up" from="ButtonContainer/PlayButton" to="." method="OnPlayButtonUp"]
 [connection signal="button_up" from="ButtonContainer/DevButton" to="." method="OnDevButtonUp"]
+[connection signal="button_up" from="ButtonContainer/ExitButton" to="." method="OnExitButtonUp"]

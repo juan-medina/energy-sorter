@@ -15,6 +15,7 @@ public partial class MenuScene : Node2D
 	private const string GameScenePath = "res://src/scenes/GameScene.tscn";
 
 	private AudioStreamPlayer2D _buttonSound;
+	private AudioStreamPlayer2D _menuMusic;
 
 	private menu.MainMenu _mainMenu;
 	private menu.LevelMenu _levelSelection;
@@ -40,6 +41,9 @@ public partial class MenuScene : Node2D
 
 		_levelManager = LevelManager.Instance;
 		Debug.Assert(_levelManager != null, "LevelManager instance is null in MenuScene");
+
+		_menuMusic = GetNode<AudioStreamPlayer2D>("Menu");
+		Debug.Assert(_menuMusic != null, "MenuMusic instance is null in MenuScene");
 	}
 
 	public async void GoToGame()
@@ -50,6 +54,8 @@ public partial class MenuScene : Node2D
 			await ToSignal(_buttonSound, nameof(_buttonSound.Finished).ToLowerInvariant());
 
 			await Fader.Instance.OutIn();
+
+			_menuMusic.Stop();
 
 			Debug.Assert(_gameScene != null, "Game scene is not assigned in the MenuScene");
 			GetTree().ChangeSceneToPacked(_gameScene);
@@ -126,6 +132,22 @@ public partial class MenuScene : Node2D
 		catch (Exception ex)
 		{
 			GD.PushError($"BackToMainMenu error: {ex}");
+		}
+	}
+
+	public async void ExitGame()
+	{
+		try
+		{
+			_buttonSound.Play();
+			await ToSignal(_buttonSound, nameof(_buttonSound.Finished).ToLowerInvariant());
+			_menuMusic.Stop();
+
+			GetTree().Quit();
+		}
+		catch (Exception ex)
+		{
+			GD.PushError($"ExitGame error: {ex}");
 		}
 	}
 }

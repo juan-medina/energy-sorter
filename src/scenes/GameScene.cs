@@ -29,6 +29,7 @@ public partial class GameScene : Node2D
 	private const string BackScenePath = "res://src/scenes/MenuScene.tscn";
 
 	private AudioStreamPlayer2D _buttonSound;
+	private AudioStreamPlayer2D _gameMusic;
 
 	private PackedScene _sparkNode;
 
@@ -49,6 +50,10 @@ public partial class GameScene : Node2D
 		Debug.Assert(_backScene != null, "Back scene could not be loaded in GameScene");
 
 		_buttonSound = GetNode<AudioStreamPlayer2D>("Button");
+		Debug.Assert(_buttonSound != null, "Button sound could not be loaded in GameScene");
+
+		_gameMusic = GetNode<AudioStreamPlayer2D>("Game");
+		Debug.Assert(_gameMusic != null, "Game music could not be loaded in GameScene");
 
 		_sparkNode = ResourceLoader.Load<PackedScene>("res://src/nodes/Spark.tscn");
 
@@ -214,6 +219,8 @@ public partial class GameScene : Node2D
 			await ToSignal(_buttonSound, nameof(_buttonSound.Finished).ToLowerInvariant());
 
 			await Fader.Instance.OutIn();
+			_gameMusic.Stop();
+
 			GetTree().ChangeSceneToPacked(_backScene);
 		}
 		catch (Exception ex)

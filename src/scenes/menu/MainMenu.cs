@@ -59,4 +59,9 @@ public partial class MainMenu : Control
 	{
 		_menuScene.GotoDevMenu();
 	}
+
+	private void OnExitButtonUp()
+	{
+		_menuScene.ExitGame();
+	}
 }
