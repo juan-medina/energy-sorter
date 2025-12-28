@@ -1,0 +1,175 @@
+[gd_scene load_steps=3 format=3 uid="uid://ccsme17a2x1pm"]
+
+[ext_resource type="Script" uid="uid://dixrra00sx0w0" path="res://src/scenes/EulaScene.cs" id="1_tmrml"]
+[ext_resource type="AudioStream" uid="uid://byoqh488on0w6" path="res://resources/button.wav" id="2_b6peb"]
+
+[node name="EULAScene" type="Node2D"]
+script = ExtResource("1_tmrml")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Layout" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/Layout"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -429.0
+offset_top = 30.0
+offset_right = 429.0
+offset_bottom = 99.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 56
+text = "End-user license agreement"
+
+[node name="BG" type="Panel" parent="UI/Layout"]
+custom_minimum_size = Vector2(1120, 800)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -560.0
+offset_top = -400.0
+offset_right = 560.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/Layout/BG"]
+custom_minimum_size = Vector2(1100, 800)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -400.0
+offset_right = 500.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/Layout/BG/ScrollContainer"]
+custom_minimum_size = Vector2(1100, 800)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.7079665, 0.7079665, 0.7079664, 1)
+theme_override_font_sizes/normal_font_size = 25
+theme_override_font_sizes/bold_font_size = 25
+theme_override_font_sizes/bold_italics_font_size = 25
+theme_override_font_sizes/italics_font_size = 25
+theme_override_font_sizes/mono_font_size = 25
+bbcode_enabled = true
+text = "[b][color=#ffffff]END USER LICENSE AGREEMENT (EULA)[/color][/b]
+[color=#cccccc]Copyright (c) 2025 Juan Medina
+All rights reserved.[/color]
+
+[b][u]1. License Grant[/u][/b]
+- You are granted a [b]non-exclusive, non-transferable, revocable[/b] license to
+  download, install, use, stream, and [b]non-commercially distribute[/b] the
+  software for personal entertainment purposes.
+- Distribution is permitted only if the software is provided [b]unmodified[/b],
+  [b]free of charge[/b], and includes this EULA and all accompanying notices.
+
+[b][u]2. Restrictions[/u][/b]
+- You may [b]not[/b] sell, rent, lease, sublicense, or commercially exploit the software.
+- You may [b]not[/b] modify, translate, adapt, merge, or create derivative works.
+- Reverse engineering, decompiling, or disassembling the software is
+  [b]strictly prohibited[/b] except where required by law.
+- You may [b]not[/b] use the software for any unlawful, harmful, or malicious activities.
+
+[b][u]3. Ownership[/u][/b]
+- The software, including all code, assets, artwork, audio, and related
+  materials, remains the [b]exclusive property of Juan Medina[/b].
+- This license does not grant you any ownership or intellectual property rights.
+
+[b][u]4. Third-Party Components[/u][/b]
+- The software may include third-party libraries, engines, or assets licensed
+  under separate open-source or free-to-use licenses.
+- All such components remain the property of their respective owners.
+- Nothing in this EULA alters or supersedes those licenses.
+
+[b][u]5. Warranty Disclaimer[/u][/b]
+- The software is provided [b]\"AS IS\"[/b] and [b]\"AS AVAILABLE\"[/b], without any warranties,
+  express or implied, including but not limited to merchantability, fitness
+  for a particular purpose, or non-infringement.
+- No guarantee is made that the software will function without errors,
+  interruptions, or compatibility issues.
+
+[b][u]6. Limitation of Liability[/u][/b]
+- To the maximum extent permitted by law, Juan Medina shall [b]not[/b] be liable for
+  any damages, including but not limited to loss of data, hardware damage,
+  system failures, financial losses, or any other direct, indirect, incidental,
+  or consequential damages arising from the use or inability to use the software.
+- You use the software [b]at your own risk[/b].
+
+[b][u]7. Termination[/u][/b]
+- This license automatically terminates if you fail to comply with any of its terms.
+- Upon termination, you must immediately cease all use and delete all copies.
+
+[b][u]8. Updates to This Agreement[/u][/b]
+- Juan Medina reserves the right to update or modify this EULA at any time.
+  Continued use of the software constitutes acceptance of the updated terms.
+
+[b][u]9. Governing Law[/u][/b]
+- This agreement is governed by the laws of [b]England and Wales[/b].
+- Any disputes shall be resolved exclusively in the courts of that jurisdiction.
+
+[b][u]10. Severability[/u][/b]
+- If any provision of this EULA is found invalid or unenforceable, the remaining
+  provisions shall remain in full force and effect.
+
+By downloading, installing, using, or distributing the software, you agree to
+be bound by the terms of this EULA.
+"
+
+[node name="Buttons" type="Control" parent="UI/Layout"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -234.0
+offset_top = -74.0
+offset_right = 234.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="AgreeButton" type="Button" parent="UI/Layout/Buttons"]
+layout_mode = 1
+offset_top = -31.0
+offset_right = 159.0
+offset_bottom = 26.0
+theme_override_font_sizes/font_size = 40
+text = "Agree"
+
+[node name="DeclineButton" type="Button" parent="UI/Layout/Buttons"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -159.0
+offset_top = -31.0
+offset_bottom = 26.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 40
+text = "Decline"
+
+[node name="Button" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(248, 511)
+stream = ExtResource("2_b6peb")
+bus = &"SFX"
+
+[connection signal="button_up" from="UI/Layout/Buttons/AgreeButton" to="." method="OnAgreeButtonUp"]
+[connection signal="button_up" from="UI/Layout/Buttons/DeclineButton" to="." method="OnDeclineButtonUp"]
